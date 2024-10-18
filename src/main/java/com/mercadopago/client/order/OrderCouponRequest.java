@@ -1,8 +1,10 @@
 package com.mercadopago.client.order;
 
+import lombok.Builder;
 import lombok.Getter;
 
 /** OrderCouponRequest class. */
+@Builder
 @Getter
 public class OrderCouponRequest {
     /** Coupon code. */
