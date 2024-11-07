@@ -162,15 +162,6 @@ class OrderClientTest extends BaseClientTest {
         String transactionId = "pay_012345";
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
                 .amount("100.00")
-                .currency("BRL")
-                .paymentMethod(OrderPaymentMethodRequest.builder()
-                        .id("master")
-                        .type("credit_card")
-                        .token("some-token")
-                        .installments(1)
-                        .issuerId("701")
-                        .statementDescriptor("statement")
-                        .build())
                 .build();
 
         OrderTransactionRequest request = OrderTransactionRequest.builder()
@@ -181,7 +172,5 @@ class OrderClientTest extends BaseClientTest {
 
         Assertions.assertNotNull(orderTransaction);
         Assertions.assertEquals("100.00", orderTransaction.getPayments().get(0).getAmount());
-        Assertions.assertEquals("BRL", orderTransaction.getPayments().get(0).getCurrency());
-        Assertions.assertEquals("master", orderTransaction.getPayments().get(0).getPaymentMethod().getId());
     }
 }

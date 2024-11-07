@@ -17,8 +17,6 @@ import org.apache.commons.lang.StringUtils;
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
 
-import org.apache.commons.lang.StringUtils;
-
 import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
 
 /** Client that use the Order API */
@@ -212,8 +210,7 @@ public class OrderClient extends MercadoPagoClient {
      * @throws MPException an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderTransaction updateTransaction(String orderId, String transactionId, OrderTransactionRequest request,
-                                                     MPRequestOptions requestOptions) throws MPException, MPApiException {
+    public OrderTransaction updateTransaction(String orderId, String transactionId, OrderTransactionRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order transaction update request");
 
         if (StringUtils.isBlank(orderId)) {
@@ -224,15 +221,20 @@ public class OrderClient extends MercadoPagoClient {
             throw new IllegalArgumentException("Transaction id cannot be null or empty");
         }
 
-        String url = String.format(URL_TRANSACTION + "/%s", orderId, transactionId);
+        String url = String.format(URL_TRANSACTION + "/%s", orderId) + "/" + transactionId;
+        LOGGER.fine("Update transaction URL: " + url);
 
         MPRequest mpRequest = MPRequest.builder()
                 .uri(url)
-                .method(HttpMethod.PUT)
+                .method(HttpMethod.PATCH)
                 .payload(Serializer.serializeToJson(request))
                 .build();
 
         MPResponse response = send(mpRequest, requestOptions);
+
+        LOGGER.fine("Received response: " + response.getContent());
+        if (response.getStatusCode() != 200)
+            throw new MPApiException("Error updating transaction: " + response.getContent(), response);
 
         OrderTransaction order = Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
         order.setResponse(response);
