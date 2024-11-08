@@ -86,7 +86,7 @@ class OrderClientTest extends BaseClientTest {
     }
 
     @Test
-    void processSucess() throws MPException, MPApiException, IOException {
+    void processSuccess() throws MPException, MPApiException, IOException {
         HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_ORDER_RESPONSE_FILE, HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
@@ -143,7 +143,6 @@ class OrderClientTest extends BaseClientTest {
                 .payments(Collections.singletonList(paymentRequest))
                 .build();
 
-
         OrderTransaction orderTransaction = client.createTransaction(orderId, request);
 
         Assertions.assertNotNull(orderTransaction);
@@ -172,5 +171,17 @@ class OrderClientTest extends BaseClientTest {
 
         Assertions.assertNotNull(orderTransaction);
         Assertions.assertEquals("100.00", orderTransaction.getPayments().get(0).getAmount());
+    }
+
+    @Test
+    void deleteSuccess() throws MPException, MPApiException, IOException {
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_ORDER_RESPONSE_FILE, HttpStatus.OK);
+        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+        String orderId = "123";
+        Order order = client.cancel(orderId);
+
+        Assertions.assertNotNull(order);
+        Assertions.assertEquals(orderId, order.getId());
     }
 }

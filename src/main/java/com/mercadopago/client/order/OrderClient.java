@@ -16,7 +16,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
-
 import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
 
 /** Client that use the Order API */
@@ -26,6 +25,7 @@ public class OrderClient extends MercadoPagoClient {
     private static final String URL_WITH_ID = "/v1/orders/%s";
     private static final String URL_PROCESS = URL_WITH_ID + "/process";
     private static final String URL_TRANSACTION = URL_WITH_ID + "/transactions";
+    private static final String URL_CANCEL = URL_WITH_ID + "/cancel";
 
     /** Default constructor. Uses the default http client used by the SDK. */
     public OrderClient() {
@@ -106,7 +106,7 @@ public class OrderClient extends MercadoPagoClient {
      */
     public Order get(String id, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order get request");
-        
+
         if (StringUtils.isBlank(id)) {
             throw new IllegalArgumentException("Order id cannot be null or empty");
         }
@@ -149,14 +149,13 @@ public class OrderClient extends MercadoPagoClient {
         }
 
         String url = String.format(URL_PROCESS, id);
-
         MPResponse response = send(url, HttpMethod.POST, null, null, requestOptions);
 
         Order order = Serializer.deserializeFromJson(Order.class, response.getContent());
         order.setResponse(response);
-
         return order;
     }
+
 
      /**
      * Method responsible for creating order with request options
@@ -186,7 +185,7 @@ public class OrderClient extends MercadoPagoClient {
         return order;
     }
 
-    /**
+     /**
      * Method responsible for creating a transaction for an order
      *
      * @param orderId The ID of the order for which the transaction is created
@@ -254,5 +253,40 @@ public class OrderClient extends MercadoPagoClient {
     public OrderTransaction updateTransaction(String orderId,String transactionId, OrderTransactionRequest request)
             throws MPException, MPApiException {
         return this.updateTransaction(orderId, transactionId, request, null);
+    }
+
+    /**
+     * Method responsible for cancel an order without request options
+     *
+     * @param orderId orderId
+     * @return order response
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public Order cancel(String orderId) throws MPException, MPApiException {
+        return this.cancel(orderId, null);
+    }
+
+    /**
+     * Method responsible for canceling an order by ID with request options
+     *
+     * @return order response
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public Order cancel(String orderId, MPRequestOptions requestOptions) throws MPException, MPApiException {
+        LOGGER.info("Sending order to delete");
+
+        if (StringUtils.isBlank(orderId)) {
+            throw new IllegalArgumentException("Order id cannot be null or empty");
+        }
+
+        String url = String.format(URL_CANCEL, orderId);
+        MPResponse response = send(url, HttpMethod.POST, null, null, requestOptions);
+        
+        Order order = Serializer.deserializeFromJson(Order.class, response.getContent());
+        order.setResponse(response);
+        
+        return order;
     }
 }
