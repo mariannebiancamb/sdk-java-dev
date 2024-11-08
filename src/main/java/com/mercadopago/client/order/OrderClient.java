@@ -5,10 +5,7 @@ import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.net.HttpMethod;
-import com.mercadopago.net.MPHttpClient;
-import com.mercadopago.net.MPRequest;
-import com.mercadopago.net.MPResponse;
+import com.mercadopago.net.*;
 import com.mercadopago.resources.order.Order;
 import com.mercadopago.resources.order.OrderTransaction;
 import com.mercadopago.serialization.Serializer;
@@ -251,19 +248,19 @@ public class OrderClient extends MercadoPagoClient {
             throws MPException, MPApiException {
         LOGGER.info("Sending order transaction delete request");
 
-        if (StringUtils.isBlank(orderId)) {
-            throw new IllegalArgumentException("Order id cannot be null or empty");
+        if (StringUtils.isBlank(orderId) || StringUtils.isBlank(transactionId)) {
+            throw new IllegalArgumentException("Order id and Transaction id cannot be null or empty");
         }
 
-        if (StringUtils.isBlank(transactionId)) {
-            throw new IllegalArgumentException("Transaction id cannot be null or empty");
-        }
-
-        String url = String.format(URL_TRANSACTION + orderId) + "/%s" + transactionId;
+        String url = String.format(URL_TRANSACTION, orderId) + "/%s";
+        url = String.format(url, transactionId);
         LOGGER.fine("Delete transaction URL: " + url);
 
         MPResponse response = send(url, HttpMethod.DELETE, null, null, requestOptions);
-        return null;
+        if (response.getStatusCode() == HttpStatus.NO_CONTENT) {
+            return null;
+        }
+        return Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
     }
 
     /**

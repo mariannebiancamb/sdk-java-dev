@@ -8,6 +8,7 @@ import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.order.Order;
 import com.mercadopago.resources.order.OrderTransaction;
 import com.mercadopago.resources.order.OrderTransaction;
+import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
@@ -153,14 +154,26 @@ class OrderClientTest extends BaseClientTest {
     }
 
     @Test
-    void deleteSuccess() throws MPException, MPApiException, IOException {
-        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_ORDER_RESPONSE_FILE, HttpStatus.OK);
+    void deleteTransactionWithNullIdThrowsException() {
+        String orderId = null;
+        String transactionId = null;
+
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            client.deleteTransaction(orderId, transactionId);
+        });
+
+        Assertions.assertEquals("Order id and Transaction id cannot be null or empty", exception.getMessage());
+    }
+
+    @Test
+    void deleteTransactionSuccess() throws MPException, MPApiException, IOException {
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(null, HttpStatus.NO_CONTENT);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
         String orderId = "123";
-        Order order = client.cancel(orderId);
+        String transactionId = "abc";
 
-        Assertions.assertNotNull(order);
-        Assertions.assertEquals(orderId, order.getId());
+        OrderTransaction orderTransaction = client.deleteTransaction(orderId, transactionId);
+        Assertions.assertNull(orderTransaction);
     }
 }
