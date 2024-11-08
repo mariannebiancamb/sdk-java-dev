@@ -201,4 +201,47 @@ public class OrderClient extends MercadoPagoClient {
             throws MPException, MPApiException {
         return this.createTransaction(orderId, request, null);
     }
+
+    /**
+     * Method responsible for deleting a transaction from the Order
+     *
+     * @param orderId The ID of the order for which the transaction is created
+     * @param transactionId The ID of the transaction to be retrieved
+     * @param requestOptions Metadata to customize the request
+     * @return The response for the action
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderTransaction deleteTransaction(String orderId, String transactionId, MPRequestOptions requestOptions)
+            throws MPException, MPApiException {
+        LOGGER.info("Sending order transaction delete request");
+
+        if (StringUtils.isBlank(orderId)) {
+            throw new IllegalArgumentException("Order id cannot be null or empty");
+        }
+
+        if (StringUtils.isBlank(transactionId)) {
+            throw new IllegalArgumentException("Transaction id cannot be null or empty");
+        }
+
+        String url = String.format(URL_TRANSACTION + orderId) + "/%s" + transactionId;
+        LOGGER.fine("Delete transaction URL: " + url);
+
+        MPResponse response = send(url, HttpMethod.DELETE, null, null, requestOptions);
+        return null;
+    }
+
+    /**
+     * Method responsible for deleting a transaction from the Order
+     *
+     * @param orderId The ID of the order for which the transaction is created
+     * @param transactionId The ID of the transaction to be retrieved
+     * @return The response for the action
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderTransaction deleteTransaction(String orderId, String transactionId)
+            throws MPException, MPApiException {
+        return this.deleteTransaction(orderId, transactionId, null);
+    }
 }
