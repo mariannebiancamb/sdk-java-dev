@@ -1,5 +1,6 @@
 package com.mercadopago.client.order;
 
+import com.google.gson.JsonObject;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
@@ -217,26 +218,29 @@ public class OrderClient extends MercadoPagoClient {
         url = String.format(url, transactionId);
         LOGGER.fine("Update transaction URL: " + url);
 
+        JsonObject payloadJson = Serializer.serializeToJson(request);
+        LOGGER.fine("Request payload: " + payloadJson);
+
         MPRequest mpRequest = MPRequest.builder()
                 .uri(url)
                 .method(HttpMethod.PATCH)
-                .payload(Serializer.serializeToJson(request))
+                .payload(payloadJson)
                 .build();
 
         MPResponse response = send(mpRequest, requestOptions);
-
         LOGGER.fine("Received response: " + response.getContent());
+
         if (response.getStatusCode() != HttpStatus.OK) {
-            throw new MPApiException("Error updating transaction: " + response.getContent(), response);
+            String errorDetails = response.getContent();
+            LOGGER.severe("Error updating transaction: " + errorDetails);
+            throw new MPApiException("Error updating transaction: " + errorDetails, response);
         }
 
         OrderTransaction order = Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
-        if (order == null) {
-            LOGGER.severe("Deserialization returned null for OrderTransaction.");
-        }
-
+        order.setResponse(response);
         return order;
     }
+
     /**
      * Method responsible for updating a transaction for an order
      *

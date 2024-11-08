@@ -6,6 +6,7 @@ import com.mercadopago.client.order.OrderPaymentRequest;
 import com.mercadopago.client.order.OrderTransactionRequest;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.net.MPResponse;
+import com.mercadopago.resources.order.OrderTransaction;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,13 +17,14 @@ public class UpdateTransaction {
 
     public static void main(String[] args) {
         MercadoPagoConfig.setAccessToken("");
+
         String orderId = "";
         String transactionId = "";
 
         OrderClient client = new OrderClient();
 
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
-                .amount("1000.00")
+                .amount("980.00")
                 .build();
 
         List<OrderPaymentRequest> payments = new ArrayList<>();
@@ -34,20 +36,19 @@ public class UpdateTransaction {
 
         Map<String, String> headers = new HashMap<>();
         headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "123456");
+        headers.put("X-Idempotency-Key", "1234568753");
         headers.put("X-Caller-SiteID", "MLB");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)
                 .build();
 
-        try{
-            MPResponse response = client.updateTransaction(orderId, transactionId, transactionRequest, requestOptions).getResponse();
-            System.out.println("Order transaction created: " + response.getContent());
-            System.out.println("Status Code: " + response.getStatusCode());
+        try {
+            OrderTransaction updatedTransaction = client.updateTransaction(orderId, transactionId, transactionRequest, requestOptions);
+            System.out.println("Updated transaction ID: " + updatedTransaction.getResponse());
         } catch (Exception e) {
-            System.out.println("Error creating order transaction: " + e.getMessage());
-            System.out.println("Cause: " + e.getCause());
+            System.out.println("Error updating order transaction: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 }
