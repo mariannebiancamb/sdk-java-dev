@@ -6,6 +6,7 @@ com.mercadopago.client.customer
 com.mercadopago.client.identificationtype
 com.mercadopago.client.merchantorder
 com.mercadopago.client.oauth
+com.mercadopago.client.order
 com.mercadopago.client.payment
 com.mercadopago.client.paymentmethod
 com.mercadopago.client.point
@@ -13,6 +14,7 @@ com.mercadopago.client.preapproval
 com.mercadopago.client.preference
 com.mercadopago.client.user
 com.mercadopago.core
+com.mercadopago.example.apis.order
 com.mercadopago.exceptions
 com.mercadopago.net
 com.mercadopago.resources
@@ -21,6 +23,7 @@ com.mercadopago.resources.customer
 com.mercadopago.resources.identificationtype
 com.mercadopago.resources.merchantorder
 com.mercadopago.resources.oauth
+com.mercadopago.resources.order
 com.mercadopago.resources.payment
 com.mercadopago.resources.paymentmethod
 com.mercadopago.resources.point

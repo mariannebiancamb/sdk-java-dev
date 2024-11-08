@@ -260,7 +260,12 @@ public class OrderClient extends MercadoPagoClient {
         if (response.getStatusCode() == HttpStatus.NO_CONTENT) {
             return null;
         }
-        return Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
+        try {
+            return Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
+        } catch (Exception e) {
+            LOGGER.severe("Failed to deserialize response: " + e.getMessage());
+            throw new MPApiException("Transaction not found", response);
+        }
     }
 
     /**

@@ -7,8 +7,6 @@ import com.mercadopago.helper.MockHelper;
 import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.order.Order;
 import com.mercadopago.resources.order.OrderTransaction;
-import com.mercadopago.resources.order.OrderTransaction;
-import org.apache.commons.lang.StringUtils;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
@@ -19,7 +17,6 @@ import org.mockito.Mockito;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Collections;
 import java.util.List;
 
 import static org.mockito.Matchers.any;
@@ -29,6 +26,7 @@ class OrderClientTest extends BaseClientTest {
     //File Mock Responses
     private static final String CREATE_ORDER_RESPONSE_FILE = "order/create_order_response.json";
     private static final String CREATE_TRANSACTION_RESPONSE_FILE = "order/create_transaction_response.json";
+    private static final String DELETE_TRANSACTION_SUCCESS_RESPONSE_FILE = "order/delete_transaction_response.json";
 
     private final OrderClient client = new OrderClient();
 
@@ -166,14 +164,15 @@ class OrderClientTest extends BaseClientTest {
     }
 
     @Test
-    void deleteTransactionSuccess() throws MPException, MPApiException, IOException {
-        HttpResponse response = MockHelper.generateHttpResponseFromFile(null, HttpStatus.NO_CONTENT);
+    void deleteTransactionSuccessWithValidIds() throws MPException, MPApiException, IOException {
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(DELETE_TRANSACTION_SUCCESS_RESPONSE_FILE, HttpStatus.NO_CONTENT);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        String orderId = "123";
-        String transactionId = "abc";
+        String orderId = "01JC44RHN3TD6BHGH89A011FW3";
+        String transactionId = "pay_01JC44RS4MZE4Z7KJVCDP249FR";
 
-        OrderTransaction orderTransaction = client.deleteTransaction(orderId, transactionId);
-        Assertions.assertNull(orderTransaction);
+        OrderTransaction result = client.deleteTransaction(orderId, transactionId);
+
+        Assertions.assertNull(result);
     }
 }
