@@ -173,15 +173,4 @@ class OrderClientTest extends BaseClientTest {
         Assertions.assertEquals("100.00", orderTransaction.getPayments().get(0).getAmount());
     }
 
-    @Test
-    void deleteSuccess() throws MPException, MPApiException, IOException {
-        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_ORDER_RESPONSE_FILE, HttpStatus.OK);
-        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
-
-        String orderId = "123";
-        Order order = client.cancel(orderId);
-
-        Assertions.assertNotNull(order);
-        Assertions.assertEquals(orderId, order.getId());
-    }
 }

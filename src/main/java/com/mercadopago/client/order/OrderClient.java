@@ -5,10 +5,7 @@ import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
-import com.mercadopago.net.HttpMethod;
-import com.mercadopago.net.MPHttpClient;
-import com.mercadopago.net.MPRequest;
-import com.mercadopago.net.MPResponse;
+import com.mercadopago.net.*;
 import com.mercadopago.resources.order.Order;
 import com.mercadopago.resources.order.OrderTransaction;
 import com.mercadopago.serialization.Serializer;
@@ -212,15 +209,12 @@ public class OrderClient extends MercadoPagoClient {
     public OrderTransaction updateTransaction(String orderId, String transactionId, OrderTransactionRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order transaction update request");
 
-        if (StringUtils.isBlank(orderId)) {
-            throw new IllegalArgumentException("Order id cannot be null or empty");
+        if (StringUtils.isBlank(orderId) || StringUtils.isBlank(transactionId)) {
+            throw new IllegalArgumentException("Order id and Transaction id cannot be null or empty");
         }
 
-        if (StringUtils.isBlank(transactionId)) {
-            throw new IllegalArgumentException("Transaction id cannot be null or empty");
-        }
-
-        String url = String.format(URL_TRANSACTION + "/%s", orderId) + "/" + transactionId;
+        String url = String.format(URL_TRANSACTION, orderId) + "/%s";
+        url = String.format(url, transactionId);
         LOGGER.fine("Update transaction URL: " + url);
 
         MPRequest mpRequest = MPRequest.builder()
@@ -232,11 +226,14 @@ public class OrderClient extends MercadoPagoClient {
         MPResponse response = send(mpRequest, requestOptions);
 
         LOGGER.fine("Received response: " + response.getContent());
-        if (response.getStatusCode() != 200)
+        if (response.getStatusCode() != HttpStatus.OK) {
             throw new MPApiException("Error updating transaction: " + response.getContent(), response);
+        }
 
         OrderTransaction order = Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
-        order.setResponse(response);
+        if (order == null) {
+            LOGGER.severe("Deserialization returned null for OrderTransaction.");
+        }
 
         return order;
     }

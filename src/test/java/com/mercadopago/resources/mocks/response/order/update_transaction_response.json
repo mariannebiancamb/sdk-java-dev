@@ -7,5 +7,15 @@
     "token": "card_token",
     "statement_descriptor": "statement",
     "installments": 1
-  }
+  },
+  "payments": [
+    {
+      "amount": "100.00",
+      "currency": "BRL",
+      "payment_method": {
+        "id": "master",
+        "type": "credit_card"
+      }
+    }
+  ]
 }
