@@ -268,7 +268,7 @@ public class OrderClient extends MercadoPagoClient {
         }
     }
 
-     /* Method responsible for deleting a transaction from the Order
+     /** Method responsible for deleting a transaction from the Order
      *
      * @param orderId The ID of the order for which the transaction is created
      * @param transactionId The ID of the transaction to be retrieved
