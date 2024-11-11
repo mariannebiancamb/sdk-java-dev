@@ -1,0 +1,16 @@
+{
+  "id": "01JCEDBNGDZ6HPQZBYYFD76MTT",
+  "status": "refunded",
+  "status_detail": "refunded",
+  "transactions": {
+    "refunds": [
+      {
+        "id": "ref_01JCEDC1MJ4084P7WBC8R9K3PD",
+        "transaction_id": "pay_01JCEDBNGDZ6HPQZBYYJ3ECZMT",
+        "reference_id": "01JCEDC0XJZNEVGM4RARCSRT63",
+        "amount": "200.00",
+        "status": "processed"
+      }
+    ]
+  }
+}

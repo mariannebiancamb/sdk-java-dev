@@ -236,40 +236,43 @@ public class OrderClient extends MercadoPagoClient {
         return order;
     }
 
-    /** Method responsible for creates total or partial refunds (total or partial) for payment transactions
-     * @param orderId The ID of the order for which the refund is created
-     * @param request The request object containing refund details
+    /**
+     * Method responsible for creates total or partial refunds (total or partial) for payment transactions
+     *
+     * @param id             The ID of the order for which the refund is created
      * @param requestOptions Metadata to customize the request
      * @return The response for the order transaction
-     * @throws MPException an error if the request fails
+     * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public Order refund(String orderId, OrderTransactionRequest request, MPRequestOptions requestOptions)
-            throws MPException, MPApiException {
-        LOGGER.info("Sending order refund request");
+    public OrderTransaction refund(String id, OrderTransactionRequest request,
+                                   MPRequestOptions requestOptions) throws MPException, MPApiException {
+        LOGGER.info("Sending order transaction intent request");
 
         MPRequest mpRequest = MPRequest.builder()
-                .uri(String.format(URL_REFUND, orderId))
+                .uri(String.format(URL_REFUND, id))
                 .method(HttpMethod.POST)
                 .payload(Serializer.serializeToJson(request))
                 .build();
 
         MPResponse response = send(mpRequest, requestOptions);
 
-        Order order = Serializer.deserializeFromJson(Order.class, response.getContent());
+        OrderTransaction order = Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
         order.setResponse(response);
 
         return order;
     }
 
-    /** Method responsible for creates total or partial refunds (total or partial) for payment transactions
-     * @param orderId The ID of the order for which the refund is created
+    /**
+     * Method responsible for creates total or partial refunds (total or partial) for payment transactions
+     *
+     * @param id      The ID of the order for which the refund is created
      * @param request The request object containing refund details
      * @return The response for the order transaction
-     * @throws MPException an error if the request fails
+     * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public Order refund(String orderId, OrderTransactionRequest request) throws MPException, MPApiException {
-        return this.refund(orderId, request, null);
+    public OrderTransaction refund(String id, OrderTransactionRequest request) throws MPException, MPApiException {
+        return this.refund(id, request, null);
     }
 }
