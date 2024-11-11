@@ -47,7 +47,6 @@ class OrderClientTest extends BaseClientTest {
         //then
         Assertions.assertNotNull(order);
         Assertions.assertEquals(request.getTotalAmount() ,order.getTotalAmount());
-
     }
 
     private static OrderCreateRequest getMinimumOrderCreateRequest() {
@@ -178,6 +177,5 @@ class OrderClientTest extends BaseClientTest {
         //then
         Assertions.assertNotNull(order);
         Assertions.assertEquals(order.getStatus(), "processed");
-
     }
 }
