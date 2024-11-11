@@ -28,6 +28,7 @@ class OrderClientTest extends BaseClientTest {
     //File Mock Responses
     private static final String CREATE_ORDER_RESPONSE_FILE = "order/create_order_response.json";
     private static final String CREATE_TRANSACTION_RESPONSE_FILE = "order/create_transaction_response.json";
+    private static final String CAPTURE_ORDER_RESPONSE_FILE = "order/capture_order_response.json";
 
     private final OrderClient client = new OrderClient();
 
@@ -162,5 +163,21 @@ class OrderClientTest extends BaseClientTest {
 
         Assertions.assertNotNull(order);
         Assertions.assertEquals(orderId, order.getId());
+    }
+
+    @Test
+    void captureSuccess() throws MPException, MPApiException, IOException {
+
+        //Mock HttpClient
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CAPTURE_ORDER_RESPONSE_FILE, HttpStatus.OK);
+        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+        //when
+        Order order = client.capture("123");
+
+        //then
+        Assertions.assertNotNull(order);
+        Assertions.assertEquals(order.getStatus(), "processed");
+
     }
 }
