@@ -27,6 +27,7 @@ public class OrderClient extends MercadoPagoClient {
     private static final String URL_PROCESS = URL_WITH_ID + "/process";
     private static final String URL_TRANSACTION = URL_WITH_ID + "/transactions";
     private static final String URL_CANCEL = URL_WITH_ID + "/cancel";
+    private static final String URL_REFUND = URL_WITH_ID + "/refunds";
 
     /** Default constructor. Uses the default http client used by the SDK. */
     public OrderClient() {
@@ -235,5 +236,40 @@ public class OrderClient extends MercadoPagoClient {
         return order;
     }
 
-   
+    /** Method responsible for creates total or partial refunds (total or partial) for payment transactions
+     * @param orderId The ID of the order for which the refund is created
+     * @param request The request object containing refund details
+     * @param requestOptions Metadata to customize the request
+     * @return The response for the order transaction
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public Order refund(String orderId, OrderTransactionRequest request, MPRequestOptions requestOptions)
+            throws MPException, MPApiException {
+        LOGGER.info("Sending order refund request");
+
+        MPRequest mpRequest = MPRequest.builder()
+                .uri(String.format(URL_REFUND, orderId))
+                .method(HttpMethod.POST)
+                .payload(Serializer.serializeToJson(request))
+                .build();
+
+        MPResponse response = send(mpRequest, requestOptions);
+
+        Order order = Serializer.deserializeFromJson(Order.class, response.getContent());
+        order.setResponse(response);
+
+        return order;
+    }
+
+    /** Method responsible for creates total or partial refunds (total or partial) for payment transactions
+     * @param orderId The ID of the order for which the refund is created
+     * @param request The request object containing refund details
+     * @return The response for the order transaction
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public Order refund(String orderId, OrderTransactionRequest request) throws MPException, MPApiException {
+        return this.refund(orderId, request, null);
+    }
 }
