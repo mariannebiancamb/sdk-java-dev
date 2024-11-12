@@ -29,7 +29,7 @@ public class UpdateTransaction {
 
         Map<String, String> headers = new HashMap<>();
         headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "12345678");
+        headers.put("X-Idempotency-Key", "{{SOME_UNIQUE_VALUE}}");
         headers.put("X-Caller-SiteID", "MLB");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
@@ -38,7 +38,7 @@ public class UpdateTransaction {
 
         try {
             OrderTransaction updatedTransaction = client.updateTransaction(orderId, transactionId, paymentRequest, requestOptions);
-            System.out.println("Updated transaction ID: " + updatedTransaction.getResponse().getContent());
+            System.out.println("Updated transaction: " + updatedTransaction.getResponse().getContent());
         } catch (Exception e) {
             System.out.println("Error updating order transaction: " + e.getMessage());
             System.out.println("Status: " + e.getCause());

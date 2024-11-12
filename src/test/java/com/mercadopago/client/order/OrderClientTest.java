@@ -206,7 +206,7 @@ class OrderClientTest extends BaseClientTest {
     void validOrderIDWithValidId() {
         String validId = "123";
         Assertions.assertDoesNotThrow(() -> {
-            client.validOrderID(validId);
+            client.validateOrderID(validId);
         });
     }
 
@@ -214,7 +214,7 @@ class OrderClientTest extends BaseClientTest {
     void validOrderIDWithNullIdThrowsException() {
         String nullId = null;
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            client.validOrderID(nullId);
+            client.validateOrderID(nullId);
         });
         Assertions.assertEquals("Order id cannot be null or empty", exception.getMessage());
     }
@@ -223,7 +223,7 @@ class OrderClientTest extends BaseClientTest {
     void validOrderIDWithEmptyIdThrowsException() {
         String emptyId = "";
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            client.validOrderID(emptyId);
+            client.validateOrderID(emptyId);
         });
         Assertions.assertEquals("Order id cannot be null or empty", exception.getMessage());
     }
@@ -232,7 +232,7 @@ class OrderClientTest extends BaseClientTest {
     void validTransactionIDWithValidId() {
         String validId = "trans_123";
         Assertions.assertDoesNotThrow(() -> {
-            client.validTransactionID(validId);
+            client.validateTransactionID(validId);
         });
     }
 
@@ -240,7 +240,7 @@ class OrderClientTest extends BaseClientTest {
     void validTransactionIDWithNullIdThrowsException() {
         String nullId = null;
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            client.validTransactionID(nullId);
+            client.validateTransactionID(nullId);
         });
         Assertions.assertEquals("Transaction id cannot be null or empty", exception.getMessage());
     }
@@ -249,7 +249,7 @@ class OrderClientTest extends BaseClientTest {
     void validTransactionIDWithEmptyIdThrowsException() {
         String emptyId = "";
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            client.validTransactionID(emptyId);
+            client.validateTransactionID(emptyId);
         });
         Assertions.assertEquals("Transaction id cannot be null or empty", exception.getMessage());
     }
