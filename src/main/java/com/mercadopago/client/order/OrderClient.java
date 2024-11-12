@@ -13,7 +13,6 @@ import org.apache.commons.lang.StringUtils;
 
 import java.util.logging.Logger;
 import java.util.logging.StreamHandler;
-
 import static com.mercadopago.MercadoPagoConfig.getStreamHandler;
 
 /** Client that use the Order API */
@@ -24,6 +23,7 @@ public class OrderClient extends MercadoPagoClient {
     private static final String URL_PROCESS = URL_WITH_ID + "/process";
     private static final String URL_TRANSACTION = URL_WITH_ID + "/transactions";
     private static final String URL_CANCEL = URL_WITH_ID + "/cancel";
+    private static final String URL_CAPTURE = URL_WITH_ID + "/capture";
     private static final String URL_REFUND = URL_WITH_ID + "/refunds";
     private static final String URL_TRANSACTION_WITH_ID = URL_WITH_ID + "/transactions/%s";
 
@@ -107,9 +107,7 @@ public class OrderClient extends MercadoPagoClient {
     public Order get(String id, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order get request");
 
-        if (StringUtils.isBlank(id)) {
-            throw new IllegalArgumentException("Order id cannot be null or empty");
-        }
+        validateOrderID(id);
 
         String url = String.format(URL_WITH_ID, id);
         MPResponse response = send(url, HttpMethod.GET, null, null, requestOptions);
@@ -144,9 +142,7 @@ public class OrderClient extends MercadoPagoClient {
     public Order process(String id, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order process request");
 
-        if (StringUtils.isBlank(id)) {
-            throw new IllegalArgumentException("Order id cannot be null or empty");
-        }
+        validateOrderID(id);
 
         String url = String.format(URL_PROCESS, id);
         MPResponse response = send(url, HttpMethod.POST, null, null, requestOptions);
@@ -156,8 +152,7 @@ public class OrderClient extends MercadoPagoClient {
         return order;
     }
 
-
-     /**
+    /**
      * Method responsible for creating order with request options
      *
      * @param orderId The ID of the order for which the transaction is created
@@ -200,6 +195,52 @@ public class OrderClient extends MercadoPagoClient {
     }
 
     /**
+     * Method responsible for updating a transaction by id with request options
+     *
+     * @param orderId orderId
+     * @param transactionId transactionId
+     * @param requestOptions Metadata to customize the request
+     * @return The response for the order transaction
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderTransaction updateTransaction(String orderId, String transactionId, OrderPaymentRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
+        LOGGER.info("Sending order transaction update request");
+
+        validateOrderID(orderId);
+        validateTransactionID(transactionId);
+
+        String url = String.format(URL_TRANSACTION_WITH_ID, orderId, transactionId);
+        LOGGER.fine("Update transaction URL: " + url);
+
+        MPRequest mpRequest = MPRequest.builder()
+                .uri(url)
+                .method(HttpMethod.PATCH)
+                .payload(Serializer.serializeToJson(request))
+                .build();
+
+        MPResponse response = send(mpRequest, requestOptions);
+        OrderTransaction order = Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
+        order.setResponse(response);
+        return order;
+    }
+
+    /**
+     * Method responsible for updating a transaction for an order
+     *
+     * @param orderId The ID of the order for which the transaction is created
+     * @param transactionId The ID of the transaction to be updated
+     * @param request The request object containing transaction details
+     * @return The response for the order transaction
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderTransaction updateTransaction(String orderId, String transactionId, OrderPaymentRequest request)
+            throws MPException, MPApiException {
+        return this.updateTransaction(orderId, transactionId, request, null);
+    }
+
+    /**
      * Method responsible for cancel an order without request options
      *
      * @param orderId orderId
@@ -221,9 +262,7 @@ public class OrderClient extends MercadoPagoClient {
     public Order cancel(String orderId, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order to delete");
 
-        if (StringUtils.isBlank(orderId)) {
-            throw new IllegalArgumentException("Order id cannot be null or empty");
-        }
+        validateOrderID(orderId);
 
         String url = String.format(URL_CANCEL, orderId);
         MPResponse response = send(url, HttpMethod.POST, null, null, requestOptions);
@@ -235,7 +274,40 @@ public class OrderClient extends MercadoPagoClient {
     }
 
     /**
-     * Method responsible for deleting a transaction from the Order
+     * Method responsible for capturing an order without request options
+     *
+     * @param orderId orderId
+     * @return order response
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public  Order capture(String orderId) throws MPException, MPApiException {
+        return this.capture(orderId, null);
+    }
+
+    /**
+     * Method responsible for capturing an order by ID with request options
+     * @param orderId The ID of the order for which the transaction is created
+     * @param requestOptions The request object containing transaction details
+     * @return order response
+     * @throws MPException an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public Order capture(String orderId, MPRequestOptions requestOptions) throws MPException, MPApiException {
+        LOGGER.info("Sending order to capture");
+
+        validateOrderID(orderId);
+
+        String url = String.format(URL_CAPTURE, orderId);
+        MPResponse response = send(url, HttpMethod.POST, null, null, requestOptions);
+
+        Order order = Serializer.deserializeFromJson(Order.class, response.getContent());
+        order.setResponse(response);
+
+        return order;
+    }
+
+     /** Method responsible for deleting a transaction from the Order
      *
      * @param orderId The ID of the order for which the transaction is created
      * @param transactionId The ID of the transaction to be retrieved
@@ -248,9 +320,8 @@ public class OrderClient extends MercadoPagoClient {
             throws MPException, MPApiException {
         LOGGER.info("Sending order transaction delete request");
 
-        if (StringUtils.isBlank(orderId) || StringUtils.isBlank(transactionId)) {
-            throw new IllegalArgumentException("Order or Transaction id cannot be null or empty");
-        }
+        validateOrderID(orderId);
+        validateTransactionID(transactionId);
 
         String url = String.format(URL_TRANSACTION_WITH_ID, orderId, transactionId);
         LOGGER.fine("Delete transaction URL: " + url);
@@ -274,6 +345,7 @@ public class OrderClient extends MercadoPagoClient {
             throws MPException, MPApiException {
         return this.deleteTransaction(orderId, transactionId, null);
     }
+
     /**
      * Method responsible for creates total or partial refunds (total or partial) for payment transactions
      *
@@ -312,5 +384,17 @@ public class OrderClient extends MercadoPagoClient {
      */
     public OrderTransaction refund(String id, OrderTransactionRequest request) throws MPException, MPApiException {
         return this.refund(id, request, null);
+    }
+
+    void validateOrderID(String id) {
+        if (StringUtils.isBlank(id)) {
+            throw new IllegalArgumentException("Order id cannot be null or empty");
+        }
+    }
+
+    void validateTransactionID(String id) {
+        if (StringUtils.isBlank(id)) {
+            throw new IllegalArgumentException("Transaction id cannot be null or empty");
+        }
     }
 }
