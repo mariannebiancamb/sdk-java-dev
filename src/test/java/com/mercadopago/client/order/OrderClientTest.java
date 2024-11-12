@@ -151,17 +151,6 @@ class OrderClientTest extends BaseClientTest {
         Assertions.assertEquals("master", orderTransaction.getPayments().get(0).getPaymentMethod().getId());
     }
 
-    @Test
-    void deleteTransactionWithNullIdThrowsException() {
-        String orderId = null;
-        String transactionId = null;
-
-        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            client.deleteTransaction(orderId, transactionId);
-        });
-
-        Assertions.assertEquals("Order or Transaction id cannot be null or empty", exception.getMessage());
-    }
 
     @Test
     void deleteTransactionSuccessWithValidIds() throws MPException, MPApiException, IOException {
@@ -211,5 +200,57 @@ class OrderClientTest extends BaseClientTest {
         //then
         Assertions.assertNotNull(order);
         Assertions.assertEquals(order.getStatus(), "processed");
+    }
+
+    @Test
+    void validOrderIDWithValidId() {
+        String validId = "123";
+        Assertions.assertDoesNotThrow(() -> {
+            client.validOrderID(validId);
+        });
+    }
+
+    @Test
+    void validOrderIDWithNullIdThrowsException() {
+        String nullId = null;
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            client.validOrderID(nullId);
+        });
+        Assertions.assertEquals("Order id cannot be null or empty", exception.getMessage());
+    }
+
+    @Test
+    void validOrderIDWithEmptyIdThrowsException() {
+        String emptyId = "";
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            client.validOrderID(emptyId);
+        });
+        Assertions.assertEquals("Order id cannot be null or empty", exception.getMessage());
+    }
+
+    @Test
+    void validTransactionIDWithValidId() {
+        String validId = "trans_123";
+        Assertions.assertDoesNotThrow(() -> {
+            client.validTransactionID(validId);
+        });
+    }
+
+    @Test
+    void validTransactionIDWithNullIdThrowsException() {
+        String nullId = null;
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            client.validTransactionID(nullId);
+        });
+        Assertions.assertEquals("Transaction id cannot be null or empty", exception.getMessage());
+    }
+
+    @Test
+    void validTransactionIDWithEmptyIdThrowsException() {
+        String emptyId = "";
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            client.validTransactionID(emptyId);
+        });
+        Assertions.assertEquals("Transaction id cannot be null or empty", exception.getMessage());
     }
 }

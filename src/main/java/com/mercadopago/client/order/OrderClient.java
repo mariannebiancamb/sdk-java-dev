@@ -206,9 +206,8 @@ public class OrderClient extends MercadoPagoClient {
     public OrderTransaction updateTransaction(String orderId, String transactionId, OrderPaymentRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order transaction update request");
 
-        if (StringUtils.isBlank(orderId) || StringUtils.isBlank(transactionId)) {
-            throw new IllegalArgumentException("Order or Transaction id cannot be null or empty");
-        }
+        validOrderID(orderId);
+        validTransactionID(transactionId);
 
         String url = String.format(URL_TRANSACTION_WITH_ID, orderId, transactionId);
         LOGGER.fine("Update transaction URL: " + url);
@@ -307,12 +306,6 @@ public class OrderClient extends MercadoPagoClient {
         return order;
     }
 
-    private void validOrderID(String id) {
-        if (StringUtils.isBlank(id)) {
-            throw new IllegalArgumentException("Order id cannot be null or empty");
-        }
-    }
-
      /** Method responsible for deleting a transaction from the Order
      *
      * @param orderId The ID of the order for which the transaction is created
@@ -326,9 +319,8 @@ public class OrderClient extends MercadoPagoClient {
             throws MPException, MPApiException {
         LOGGER.info("Sending order transaction delete request");
 
-        if (StringUtils.isBlank(orderId) || StringUtils.isBlank(transactionId)) {
-            throw new IllegalArgumentException("Order or Transaction id cannot be null or empty");
-        }
+        validOrderID(orderId);
+        validTransactionID(transactionId);
 
         String url = String.format(URL_TRANSACTION_WITH_ID, orderId, transactionId);
         LOGGER.fine("Delete transaction URL: " + url);
@@ -351,5 +343,17 @@ public class OrderClient extends MercadoPagoClient {
     public OrderTransaction deleteTransaction(String orderId, String transactionId)
             throws MPException, MPApiException {
         return this.deleteTransaction(orderId, transactionId, null);
+    }
+
+    void validOrderID(String id) {
+        if (StringUtils.isBlank(id)) {
+            throw new IllegalArgumentException("Order id cannot be null or empty");
+        }
+    }
+
+    void validTransactionID(String id) {
+        if (StringUtils.isBlank(id)) {
+            throw new IllegalArgumentException("Transaction id cannot be null or empty");
+        }
     }
 }
