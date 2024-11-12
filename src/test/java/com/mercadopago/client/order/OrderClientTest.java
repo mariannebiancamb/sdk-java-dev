@@ -152,25 +152,30 @@ class OrderClientTest extends BaseClientTest {
     }
 
     @Test
-    void updateTransactionIntentSuccess() throws MPException, MPApiException, IOException {
-        HttpResponse response = MockHelper.generateHttpResponseFromFile(UPDATE_TRANSACTION_FILE, HttpStatus.OK);
+    void deleteTransactionWithNullIdThrowsException() {
+        String orderId = null;
+        String transactionId = null;
 
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
+            client.deleteTransaction(orderId, transactionId);
+        });
+
+        Assertions.assertEquals("Order or Transaction id cannot be null or empty", exception.getMessage());
+    }
+
+    @Test
+    void deleteTransactionSuccessWithValidIds() throws MPException, MPApiException, IOException {
+        HttpResponse response = MockHelper.generateHttpResponse(HttpStatus.NO_CONTENT);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        String orderId = "123";
-        String transactionId = "pay_012345";
-        OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
-                .amount("100.00")
-                .build();
+        String orderId = "01JC44RHN3TD6BHGH89A011FW3";
+        String transactionId = "pay_01JC44RS4MZE4Z7KJVCDP249FR";
 
-        OrderTransactionRequest request = OrderTransactionRequest.builder()
-                .payments(Collections.singletonList(paymentRequest))
-                .build();
+        OrderTransaction result = client.deleteTransaction(orderId, transactionId);
 
-        OrderTransaction orderTransaction = client.updateTransaction(orderId, transactionId, request);
-
-        Assertions.assertNotNull(orderTransaction);
-        Assertions.assertEquals("100.00", orderTransaction.getPayments().get(0).getAmount());
+        Assertions.assertNotNull(result);
+        Assertions.assertNotNull(result.getResponse());
+        Assertions.assertEquals(HttpStatus.NO_CONTENT, result.getResponse().getStatusCode());
     }
 
 }
