@@ -16,27 +16,20 @@ import java.util.Map;
 public class UpdateTransaction {
 
     public static void main(String[] args) {
-        MercadoPagoConfig.setAccessToken("");
+        MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
 
-        String orderId = "";
-        String transactionId = "";
+        String orderId = "{{ORDER_ID}}";
+        String transactionId = "{{TRANSACTION_ID}}";
 
         OrderClient client = new OrderClient();
 
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
-                .amount("980.00")
-                .build();
-
-        List<OrderPaymentRequest> payments = new ArrayList<>();
-        payments.add(paymentRequest);
-
-        OrderTransactionRequest transactionRequest = OrderTransactionRequest.builder()
-                .payments(payments)
+                .amount("50.00")
                 .build();
 
         Map<String, String> headers = new HashMap<>();
         headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "11111");
+        headers.put("X-Idempotency-Key", "12345678");
         headers.put("X-Caller-SiteID", "MLB");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
@@ -44,10 +37,11 @@ public class UpdateTransaction {
                 .build();
 
         try {
-            OrderTransaction updatedTransaction = client.updateTransaction(orderId, transactionId, transactionRequest, requestOptions);
-            System.out.println("Updated transaction ID: " + updatedTransaction.getResponse());
+            OrderTransaction updatedTransaction = client.updateTransaction(orderId, transactionId, paymentRequest, requestOptions);
+            System.out.println("Updated transaction ID: " + updatedTransaction.getResponse().getContent());
         } catch (Exception e) {
             System.out.println("Error updating order transaction: " + e.getMessage());
+            System.out.println("Status: " + e.getCause());
         }
     }
 }

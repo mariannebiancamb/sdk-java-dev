@@ -190,14 +190,8 @@ class OrderClientTest extends BaseClientTest {
                 .amount("980.00")
                 .build();
 
-        List<OrderPaymentRequest> payments = new ArrayList<>();
-        payments.add(paymentRequest);
 
-        OrderTransactionRequest transactionRequest = OrderTransactionRequest.builder()
-                .payments(payments)
-                .build();
-
-        OrderTransaction updatedTransaction = client.updateTransaction(orderId, transactionId, transactionRequest);
+        OrderTransaction updatedTransaction = client.updateTransaction(orderId, transactionId, paymentRequest);
 
         Assertions.assertNotNull(updatedTransaction);
         Assertions.assertEquals(HttpStatus.OK, updatedTransaction.getResponse().getStatusCode());

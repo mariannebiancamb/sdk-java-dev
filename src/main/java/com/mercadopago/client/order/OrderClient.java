@@ -1,6 +1,5 @@
 package com.mercadopago.client.order;
 
-import com.google.gson.JsonObject;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
@@ -204,7 +203,7 @@ public class OrderClient extends MercadoPagoClient {
      * @throws MPException an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderTransaction updateTransaction(String orderId, String transactionId, OrderTransactionRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
+    public OrderTransaction updateTransaction(String orderId, String transactionId, OrderPaymentRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order transaction update request");
 
         if (StringUtils.isBlank(orderId) || StringUtils.isBlank(transactionId)) {
@@ -214,24 +213,13 @@ public class OrderClient extends MercadoPagoClient {
         String url = String.format(URL_TRANSACTION_WITH_ID, orderId, transactionId);
         LOGGER.fine("Update transaction URL: " + url);
 
-        JsonObject payloadJson = Serializer.serializeToJson(request);
-        LOGGER.fine("Request payload: " + payloadJson);
-
         MPRequest mpRequest = MPRequest.builder()
                 .uri(url)
                 .method(HttpMethod.PATCH)
-                .payload(payloadJson)
+                .payload(Serializer.serializeToJson(request))
                 .build();
 
         MPResponse response = send(mpRequest, requestOptions);
-        LOGGER.fine("Received response: " + response.getContent());
-
-        if (response.getStatusCode() != HttpStatus.OK) {
-            String errorDetails = response.getContent();
-            LOGGER.severe("Error updating transaction: " + errorDetails);
-            throw new MPApiException("Error updating transaction: " + errorDetails, response);
-        }
-
         OrderTransaction order = Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
         order.setResponse(response);
         return order;
@@ -247,7 +235,7 @@ public class OrderClient extends MercadoPagoClient {
      * @throws MPException an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderTransaction updateTransaction(String orderId,String transactionId, OrderTransactionRequest request)
+    public OrderTransaction updateTransaction(String orderId, String transactionId, OrderPaymentRequest request)
             throws MPException, MPApiException {
         return this.updateTransaction(orderId, transactionId, request, null);
     }
