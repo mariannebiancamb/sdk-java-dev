@@ -178,4 +178,29 @@ class OrderClientTest extends BaseClientTest {
         Assertions.assertEquals(HttpStatus.NO_CONTENT, result.getResponse().getStatusCode());
     }
 
+    @Test
+    void updateTransactionSuccessWithValidIds() throws MPException, MPApiException, IOException {
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(UPDATE_TRANSACTION_FILE, HttpStatus.OK);
+        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+        String orderId = "01JC44RHN3TD6BHGH89A011FW3";
+        String transactionId = "pay_01JC44RS4MZE4Z7KJVCDP249FR";
+
+        OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
+                .amount("980.00")
+                .build();
+
+        List<OrderPaymentRequest> payments = new ArrayList<>();
+        payments.add(paymentRequest);
+
+        OrderTransactionRequest transactionRequest = OrderTransactionRequest.builder()
+                .payments(payments)
+                .build();
+
+        OrderTransaction updatedTransaction = client.updateTransaction(orderId, transactionId, transactionRequest);
+
+        Assertions.assertNotNull(updatedTransaction);
+        Assertions.assertEquals(HttpStatus.OK, updatedTransaction.getResponse().getStatusCode());
+    }
+
 }
