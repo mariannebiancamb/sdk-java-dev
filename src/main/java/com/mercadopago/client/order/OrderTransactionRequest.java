@@ -12,4 +12,7 @@ public class OrderTransactionRequest{
 
     /** List of payments. */
     private List<OrderPaymentRequest> payments;
+
+    /** List of refunds. */
+    private List<OrderRefundRequest> refunds;
 }

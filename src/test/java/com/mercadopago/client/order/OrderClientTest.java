@@ -6,6 +6,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
 import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.order.Order;
+import com.mercadopago.resources.order.OrderRefund;
 import com.mercadopago.resources.order.OrderTransaction;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -28,7 +29,8 @@ class OrderClientTest extends BaseClientTest {
     private static final String CREATE_TRANSACTION_RESPONSE_FILE = "order/create_transaction_response.json";
     private static final String UPDATE_TRANSACTION_FILE = "order/update_transaction_response.json";
     private static final String CAPTURE_ORDER_RESPONSE_FILE = "order/capture_order_response.json";
-    private static final String CREATE_REFUND_RESPONSE_FILE = "order/create_refund_response.json";
+    private static final String CREATE_REFUND_TOTAL_RESPONSE_FILE = "order/create_refund_total_response.json";
+    private static final String CREATE_REFUND_PARTIAL_RESPONSE_FILE = "order/create_refund_partial_response.json";
 
     private final OrderClient client = new OrderClient();
 
@@ -180,13 +182,11 @@ class OrderClientTest extends BaseClientTest {
                 .amount("980.00")
                 .build();
 
-
         OrderTransaction updatedTransaction = client.updateTransaction(orderId, transactionId, paymentRequest);
 
         Assertions.assertNotNull(updatedTransaction);
         Assertions.assertEquals(HttpStatus.OK, updatedTransaction.getResponse().getStatusCode());
     }
-
 
     @Test
     void captureSuccess() throws MPException, MPApiException, IOException {
@@ -201,6 +201,41 @@ class OrderClientTest extends BaseClientTest {
         //then
         Assertions.assertNotNull(order);
         Assertions.assertEquals(order.getStatus(), "processed");
+    }
+
+    @Test
+    void refundTotalSuccess() throws MPException, MPApiException, IOException {
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_TOTAL_RESPONSE_FILE, HttpStatus.OK);
+        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+        String id = "01JCK2RRKV10XVTEBJR598QH9Z";
+
+        OrderTransaction orderTransaction = client.refundTotal(id);
+
+        Assertions.assertNotNull(orderTransaction);
+        Assertions.assertEquals(HttpStatus.OK, orderTransaction.getResponse().getStatusCode());
+    }
+
+    @Test
+    void refundPartialSuccess() throws MPException, MPApiException, IOException {
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_PARTIAL_RESPONSE_FILE, HttpStatus.OK);
+        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+        String orderId = "01JCK2RRKV10XVTEBJR598QH9Z";
+
+        OrderRefundRequest  refundRequest = OrderRefundRequest.builder()
+                .paymentId("pay_01JCK7NYARQB4J3RN0SX81MCPM")
+                .amount("100.00")
+                .build();
+
+        OrderTransactionRequest request = OrderTransactionRequest.builder()
+                .refunds(Collections.singletonList(refundRequest))
+                .build();
+
+        OrderTransaction orderTransaction = client.refundPartial(orderId, request);
+
+        Assertions.assertNotNull(orderTransaction);
+        Assertions.assertEquals(HttpStatus.OK, orderTransaction.getResponse().getStatusCode());
     }
 
     @Test
@@ -254,14 +289,4 @@ class OrderClientTest extends BaseClientTest {
         });
         Assertions.assertEquals("Transaction id cannot be null or empty", exception.getMessage());
     }
-
-    @Test
-    void refundSucess() throws MPException, MPApiException, IOException {
-        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_RESPONSE_FILE, HttpStatus.OK);
-
-        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
-
-        String id = "123";
-    }
-
 }
