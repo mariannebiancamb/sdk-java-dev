@@ -203,7 +203,7 @@ class OrderClientTest extends BaseClientTest {
         Assertions.assertEquals(order.getStatus(), "processed");
     }
 
-   /* @Test
+    @Test
     void refundTotalSuccess() throws MPException, MPApiException, IOException {
         HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_TOTAL_RESPONSE_FILE, HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
@@ -216,28 +216,6 @@ class OrderClientTest extends BaseClientTest {
         Assertions.assertEquals(HttpStatus.OK, orderTransaction.getResponse().getStatusCode());
     }
 
-    @Test
-    void refundPartialSuccess() throws MPException, MPApiException, IOException {
-        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_PARTIAL_RESPONSE_FILE, HttpStatus.OK);
-        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
-
-        String orderId = "01JCK2RRKV10XVTEBJR598QH9Z";
-
-        OrderRefundRequest  refundRequest = OrderRefundRequest.builder()
-                .paymentId("pay_01JCK7NYARQB4J3RN0SX81MCPM")
-                .amount("100.00")
-                .build();
-
-        OrderTransactionRequest request = OrderTransactionRequest.builder()
-                .refunds(Collections.singletonList(refundRequest))
-                .build();
-
-        OrderTransaction orderTransaction = client.refundPartial(orderId, request);
-
-        Assertions.assertNotNull(orderTransaction);
-        Assertions.assertEquals(HttpStatus.OK, orderTransaction.getResponse().getStatusCode());
-    }
-*/
     @Test
     void validOrderIDWithValidId() {
         String validId = "123";

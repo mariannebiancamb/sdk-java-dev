@@ -38,7 +38,7 @@ public class RefundPartial {
                 .build();
 
         try {
-            MPResponse response = client.refundPartialTest(orderId, orderRequest, requestOptions).getResponse();
+            MPResponse response = client.refundPartial(orderId, orderRequest, requestOptions).getResponse();
             System.out.println("Updated transaction: " + response.getContent());
         } catch (MPException e) {
             System.out.println("Error refund order transaction: " + e.getMessage());

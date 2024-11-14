@@ -405,8 +405,8 @@ public class OrderClient extends MercadoPagoClient {
      * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderTransaction refundPartialTest(String orderId, OrderRefundRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
-        return this.refundPartial(orderId, request, requestOptions);
+    public OrderTransaction refundPartial(String orderId, OrderRefundRequest request) throws MPException, MPApiException {
+        return this.refundPartial(orderId, request);
     }
 
     /**
