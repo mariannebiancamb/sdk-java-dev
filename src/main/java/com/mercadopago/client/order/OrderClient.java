@@ -374,6 +374,17 @@ public class OrderClient extends MercadoPagoClient {
     }
 
     /**
+     * Method responsible for a partial refund for payment transactions
+     * @param orderId        The ID of the order for which the refund is created
+     * @return The response for the order transaction
+     * @throws MPException    an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderTransaction refundPartial(String orderId, OrderRefundRequest request) throws MPException, MPApiException {
+        return this.refundPartial(orderId, request, null);
+    }
+
+    /**
      * Method responsible for creates a total refunds for payment transactions without body
      *
      * @param orderId The ID of the order for which the refund is created
@@ -394,19 +405,6 @@ public class OrderClient extends MercadoPagoClient {
         OrderTransaction order = Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
         order.setResponse(response);
         return order;
-    }
-
-    /**
-     * Method responsible for a partial refund for payment transactions
-     *
-     * @param orderId        The ID of the order for which the refund is created
-
-     * @return The response for the order transaction
-     * @throws MPException    an error if the request fails
-     * @throws MPApiException an error if the request fails
-     */
-    public OrderTransaction refundPartial(String orderId, OrderRefundRequest request) throws MPException, MPApiException {
-        return this.refundPartial(orderId, request);
     }
 
     /**

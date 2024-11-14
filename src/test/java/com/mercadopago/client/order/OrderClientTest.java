@@ -6,7 +6,6 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
 import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.order.Order;
-import com.mercadopago.resources.order.OrderRefund;
 import com.mercadopago.resources.order.OrderTransaction;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
