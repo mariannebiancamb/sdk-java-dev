@@ -30,5 +30,4 @@ public class RefundTotal {
             System.out.println("Error while refunding order: " + e.getMessage());
         }
     }
-
 }
