@@ -347,7 +347,7 @@ public class OrderClient extends MercadoPagoClient {
     }
 
     /**
-     * Method responsible for a total refund for payment transactions
+     * Method responsible for creates a partial refunds for payment transactions without request options
      *
      * @param orderId      The ID of the order for which the refund is created
      * @return The response for the order transaction
@@ -359,7 +359,7 @@ public class OrderClient extends MercadoPagoClient {
     }
 
     /**
-     * Method responsible for creates a total refunds for payment transactions without body
+     * Method responsible for creates a partial refunds for payment transactions with request options
      *
      * @param orderId The ID of the order for which the refund is created
      * @param requestOptions Metadata to customize the request
@@ -372,8 +372,9 @@ public class OrderClient extends MercadoPagoClient {
     }
 
     /**
-     * Method responsible for a partial refund for payment transactions
-     * @param orderId        The ID of the order for which the refund is created
+     * Method responsible for creates a partial refunds for payment transactions without request options
+     * @param orderId The ID of the order for which the refund is created
+     * @param request OrderRefundRequest The request object containing refund details
      * @return The response for the order transaction
      * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
@@ -383,7 +384,7 @@ public class OrderClient extends MercadoPagoClient {
     }
 
     /**
-     * Method responsible for creates a partial refunds for payment transactions
+     * Method responsible for creates a partial refunds for payment transactions with request options
      *
      * @param orderId The ID of the order for which the refund is created
      * @param requestOptions Metadata to customize the request
