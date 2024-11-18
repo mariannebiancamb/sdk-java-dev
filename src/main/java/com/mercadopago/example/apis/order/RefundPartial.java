@@ -11,14 +11,14 @@ import java.util.*;
 public class RefundPartial {
 
     public static void main(String[] args) {
-        MercadoPagoConfig.setAccessToken("{{TOKEN}}");
-        String orderId = "{{ORDER_ID}}";
+        MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
+        String orderId = "{{order_id}}";
 
         OrderClient client = new OrderClient();
 
         OrderRefundPaymentRequest refundRequest = OrderRefundPaymentRequest.builder()
                 .id("{{payment_id}}")
-                .amount("50.00")
+                .amount("10.00")
                 .build();
 
         List<OrderRefundPaymentRequest>  orderRefundTransactionRequests = new ArrayList<>();
@@ -31,14 +31,14 @@ public class RefundPartial {
 
         Map<String, String> headers = new HashMap<>();
         headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "{{SOME_IDEMPOTENCY_KEY}}");
+        headers.put("X-Idempotency-Key", "{{idempotency_key}}");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)
                 .build();
 
         try {
-            MPResponse response = client.refundPartial(orderId, orderRequest, requestOptions).getResponse();
+            MPResponse response = client.refund(orderId, orderRequest, requestOptions).getResponse();
             System.out.println("Updated transaction: " + response.getContent());
         } catch (MPException e) {
             System.out.println("Error refund order transaction: " + e.getMessage());
