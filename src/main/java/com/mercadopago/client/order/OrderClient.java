@@ -6,8 +6,7 @@ import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.*;
-import com.mercadopago.resources.order.Order;
-import com.mercadopago.resources.order.OrderTransaction;
+import com.mercadopago.resources.order.*;
 import com.mercadopago.serialization.Serializer;
 import org.apache.commons.lang.StringUtils;
 
@@ -355,7 +354,7 @@ public class OrderClient extends MercadoPagoClient {
      * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderTransaction refundPartial(String orderId, OrderRefundRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
+    public OrderRefund refundPartial(String orderId, OrderRefundRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order transaction intent request");
 
         validateOrderID(orderId);
@@ -368,7 +367,7 @@ public class OrderClient extends MercadoPagoClient {
 
         MPResponse response = send(mpRequest, requestOptions);
 
-        OrderTransaction order = Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
+        OrderRefund order = Serializer.deserializeFromJson(OrderRefund.class, response.getContent());
         order.setResponse(response);
         return order;
     }
@@ -380,7 +379,7 @@ public class OrderClient extends MercadoPagoClient {
      * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderTransaction refundPartial(String orderId, OrderRefundRequest request) throws MPException, MPApiException {
+    public OrderRefund refundPartial(String orderId, OrderRefundRequest request) throws MPException, MPApiException {
         return this.refundPartial(orderId, request, null);
     }
 
@@ -393,7 +392,7 @@ public class OrderClient extends MercadoPagoClient {
      * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderTransaction refundTotal(String orderId, MPRequestOptions requestOptions) throws MPException, MPApiException {
+    public OrderRefund refundTotal(String orderId, MPRequestOptions requestOptions) throws MPException, MPApiException {
         LOGGER.info("Sending order transaction intent request");
 
         MPRequest.MPRequestBuilder mpRequestBuilder = MPRequest.builder()
@@ -402,7 +401,7 @@ public class OrderClient extends MercadoPagoClient {
 
         MPRequest mpRequest = mpRequestBuilder.build();
         MPResponse response = send(mpRequest, requestOptions);
-        OrderTransaction order = Serializer.deserializeFromJson(OrderTransaction.class, response.getContent());
+        OrderRefund order = Serializer.deserializeFromJson(OrderRefund.class, response.getContent());
         order.setResponse(response);
         return order;
     }
@@ -415,7 +414,7 @@ public class OrderClient extends MercadoPagoClient {
      * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderTransaction refundTotal(String orderId)
+    public OrderRefund refundTotal(String orderId)
             throws MPException, MPApiException {
         return this.refundTotal(orderId, null);
     }

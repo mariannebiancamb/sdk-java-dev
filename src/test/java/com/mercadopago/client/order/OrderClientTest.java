@@ -6,6 +6,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
 import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.order.Order;
+import com.mercadopago.resources.order.OrderRefund;
 import com.mercadopago.resources.order.OrderTransaction;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -209,10 +210,10 @@ class OrderClientTest extends BaseClientTest {
 
         String id = "01JCK2RRKV10XVTEBJR598QH9Z";
 
-        OrderTransaction orderTransaction = client.refundTotal(id);
+        OrderRefund orderRefund = client.refundTotal(id);
 
-        Assertions.assertNotNull(orderTransaction);
-        Assertions.assertEquals(HttpStatus.OK, orderTransaction.getResponse().getStatusCode());
+        Assertions.assertNotNull(orderRefund);
+        Assertions.assertEquals(HttpStatus.OK, orderRefund.getResponse().getStatusCode());
     }
 
     @Test
@@ -231,10 +232,10 @@ class OrderClientTest extends BaseClientTest {
                 .transactions(Collections.singletonList(paymentRequest))
                 .build();
 
-        OrderTransaction orderTransaction = client.refundPartial(orderId, refundRequest);
+        OrderRefund orderRefund = client.refundPartial(orderId, refundRequest);
 
-        Assertions.assertNotNull(orderTransaction);
-        Assertions.assertEquals(HttpStatus.OK, orderTransaction.getResponse().getStatusCode());
+        Assertions.assertNotNull(orderRefund);
+        Assertions.assertEquals(HttpStatus.OK, orderRefund.getResponse().getStatusCode());
     }
 
     @Test

@@ -9,14 +9,14 @@ import java.util.Map;
 
 public class RefundTotal {
     public static void main(String[] args) {
-        MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
-        String orderId = "{{order_id}}";
+        MercadoPagoConfig.setAccessToken("{{token}}");
+        String orderId = "{{orderId}}";
 
         OrderClient client = new OrderClient();
 
         Map<String, String> headers = new HashMap<>();
         headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "1234569999");
+        headers.put("X-Idempotency-Key", "234567");
         headers.put("X-Caller-SiteID", "MLB");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
