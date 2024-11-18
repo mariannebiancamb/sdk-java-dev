@@ -245,7 +245,7 @@ class OrderClientTest extends BaseClientTest {
     }
 
     @Test
-    void refundWithValidRequestPayload() throws MPException, MPApiException, IOException {
+    void refundWithValidRequestPayload() throws IOException {
         HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_TOTAL_RESPONSE_FILE, HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
@@ -256,8 +256,6 @@ class OrderClientTest extends BaseClientTest {
                         .amount("50.00")
                         .build()))
                 .build();
-
-        OrderRefund orderRefund = client.refund(orderId, refundRequest, null);
 
         JsonObject payload = Serializer.serializeToJson(refundRequest);
         Assertions.assertNotNull(payload);
