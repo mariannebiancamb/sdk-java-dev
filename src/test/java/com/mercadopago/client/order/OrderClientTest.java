@@ -1,5 +1,6 @@
 package com.mercadopago.client.order;
 
+import com.google.gson.JsonObject;
 import com.mercadopago.BaseClientTest;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
@@ -8,6 +9,7 @@ import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.order.Order;
 import com.mercadopago.resources.order.OrderRefund;
 import com.mercadopago.resources.order.OrderTransaction;
+import com.mercadopago.serialization.Serializer;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.protocol.HttpContext;
@@ -20,6 +22,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
+import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 
 class OrderClientTest extends BaseClientTest {
@@ -210,10 +213,13 @@ class OrderClientTest extends BaseClientTest {
 
         String id = "01JCK2RRKV10XVTEBJR598QH9Z";
 
-        OrderRefund orderRefund = client.refundTotal(id);
+        OrderRefund orderRefund = client.refund(id);
 
         Assertions.assertNotNull(orderRefund);
         Assertions.assertEquals(HttpStatus.OK, orderRefund.getResponse().getStatusCode());
+        assertNotNull(orderRefund.getResponse());
+        Assertions.assertEquals("refunded", orderRefund.getStatus());
+        Assertions.assertEquals("ref_01JCK2SDVFSJGY54AMJCDR9X7R", orderRefund.getTransactions().getRefunds().get(0).getId());
     }
 
     @Test
@@ -232,10 +238,31 @@ class OrderClientTest extends BaseClientTest {
                 .transactions(Collections.singletonList(paymentRequest))
                 .build();
 
-        OrderRefund orderRefund = client.refundPartial(orderId, refundRequest);
+        OrderRefund orderRefund = client.refund(orderId, refundRequest);
 
         Assertions.assertNotNull(orderRefund);
         Assertions.assertEquals(HttpStatus.OK, orderRefund.getResponse().getStatusCode());
+    }
+
+    @Test
+    void refundWithValidRequestPayload() throws MPException, MPApiException, IOException {
+        HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_TOTAL_RESPONSE_FILE, HttpStatus.OK);
+        Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
+
+        String orderId = "01JCK2RRKV10XVTEBJR598QH9Z";
+        OrderRefundRequest refundRequest = OrderRefundRequest.builder()
+                .transactions(Collections.singletonList(OrderRefundPaymentRequest.builder()
+                        .id("pay_01JCK2RRKV10XVTEBJR598QH9Z")
+                        .amount("50.00")
+                        .build()))
+                .build();
+
+        OrderRefund orderRefund = client.refund(orderId, refundRequest, null);
+
+        JsonObject payload = Serializer.serializeToJson(refundRequest);
+        Assertions.assertNotNull(payload);
+        Assertions.assertTrue(payload.has("transactions"));
+        Assertions.assertEquals("50.00", payload.getAsJsonArray("transactions").get(0).getAsJsonObject().get("amount").getAsString());
     }
 
     @Test

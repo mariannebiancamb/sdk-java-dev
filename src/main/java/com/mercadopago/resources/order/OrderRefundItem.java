@@ -9,7 +9,7 @@ public class OrderRefundItem {
     /** Refund ID. */
     private String id;
 
-    /** Payment ID. */
+    /** Transaction ID. */
     private String transactionId;
 
     /** Reference of the refund. */

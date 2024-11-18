@@ -46,6 +46,5 @@ public class RefundPartial {
         } catch (Exception e) {
             System.out.println("Error refund order transaction: " + e.getMessage());
         }
-
     }
 }
