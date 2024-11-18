@@ -1,5 +1,6 @@
 package com.mercadopago.client.order;
 
+import com.google.gson.JsonObject;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.MercadoPagoClient;
 import com.mercadopago.core.MPRequestOptions;
@@ -346,41 +347,15 @@ public class OrderClient extends MercadoPagoClient {
     }
 
     /**
-     * Method responsible for creates a partial refunds for payment transactions
+     * Method responsible for a total refund for payment transactions
      *
-     * @param orderId The ID of the order for which the refund is created
-     * @param requestOptions Metadata to customize the request
+     * @param orderId      The ID of the order for which the refund is created
      * @return The response for the order transaction
      * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderRefund refundPartial(String orderId, OrderRefundRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
-        LOGGER.info("Sending order transaction intent request");
-
-        validateOrderID(orderId);
-
-        MPRequest mpRequest = MPRequest.builder()
-                .uri(String.format(URL_REFUND, orderId))
-                .method(HttpMethod.POST)
-                .payload(Serializer.serializeToJson(request))
-                .build();
-
-        MPResponse response = send(mpRequest, requestOptions);
-
-        OrderRefund order = Serializer.deserializeFromJson(OrderRefund.class, response.getContent());
-        order.setResponse(response);
-        return order;
-    }
-
-    /**
-     * Method responsible for a partial refund for payment transactions
-     * @param orderId        The ID of the order for which the refund is created
-     * @return The response for the order transaction
-     * @throws MPException    an error if the request fails
-     * @throws MPApiException an error if the request fails
-     */
-    public OrderRefund refundPartial(String orderId, OrderRefundRequest request) throws MPException, MPApiException {
-        return this.refundPartial(orderId, request, null);
+    public OrderRefund refund(String orderId) throws MPException, MPApiException {
+        return this.refund(orderId, null, null);
     }
 
     /**
@@ -392,31 +367,48 @@ public class OrderClient extends MercadoPagoClient {
      * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderRefund refundTotal(String orderId, MPRequestOptions requestOptions) throws MPException, MPApiException {
-        LOGGER.info("Sending order transaction intent request");
-
-        MPRequest.MPRequestBuilder mpRequestBuilder = MPRequest.builder()
-                .uri(String.format(URL_REFUND, orderId))
-                .method(HttpMethod.POST);
-
-        MPRequest mpRequest = mpRequestBuilder.build();
-        MPResponse response = send(mpRequest, requestOptions);
-        OrderRefund order = Serializer.deserializeFromJson(OrderRefund.class, response.getContent());
-        order.setResponse(response);
-        return order;
+    public OrderRefund refund(String orderId, MPRequestOptions requestOptions) throws MPException, MPApiException {
+        return this.refund(orderId, null, requestOptions);
     }
 
     /**
-     * Method responsible for a total refund for payment transactions
-     *
-     * @param orderId      The ID of the order for which the refund is created
+     * Method responsible for a partial refund for payment transactions
+     * @param orderId        The ID of the order for which the refund is created
      * @return The response for the order transaction
      * @throws MPException    an error if the request fails
      * @throws MPApiException an error if the request fails
      */
-    public OrderRefund refundTotal(String orderId)
-            throws MPException, MPApiException {
-        return this.refundTotal(orderId, null);
+    public OrderRefund refund(String orderId, OrderRefundRequest request) throws MPException, MPApiException {
+        return this.refund(orderId, request, null);
+    }
+
+    /**
+     * Method responsible for creates a partial refunds for payment transactions
+     *
+     * @param orderId The ID of the order for which the refund is created
+     * @param requestOptions Metadata to customize the request
+     * @return The response for the order transaction
+     * @throws MPException    an error if the request fails
+     * @throws MPApiException an error if the request fails
+     */
+    public OrderRefund refund(String orderId, OrderRefundRequest request, MPRequestOptions requestOptions) throws MPException, MPApiException {
+        LOGGER.info("Sending order transaction intent request");
+
+        validateOrderID(orderId);
+
+        JsonObject payload = request != null ? Serializer.serializeToJson(request) : null;
+
+        MPRequest mpRequest = MPRequest.builder()
+                .uri(String.format(URL_REFUND, orderId))
+                .method(HttpMethod.POST)
+                .payload(payload)
+                .build();
+
+        MPResponse response = send(mpRequest, requestOptions);
+
+        OrderRefund order = Serializer.deserializeFromJson(OrderRefund.class, response.getContent());
+        order.setResponse(response);
+        return order;
     }
 
     void validateOrderID(String id) {

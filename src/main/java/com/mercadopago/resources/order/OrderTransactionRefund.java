@@ -4,7 +4,9 @@ import lombok.Getter;
 
 import java.util.List;
 
-
+/**
+ * OrderTransactionRefund class.
+ */
 @Getter
 public class OrderTransactionRefund {
 
