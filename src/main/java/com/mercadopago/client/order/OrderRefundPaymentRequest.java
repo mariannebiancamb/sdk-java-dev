@@ -3,9 +3,9 @@ package com.mercadopago.client.order;
 import lombok.Builder;
 import lombok.Getter;
 
+/** OrderRefundRequest class. */
 @Builder
 @Getter
-/** OrderRefundRequest class. */
 public class OrderRefundPaymentRequest {
 
     /** Payment ID. */
@@ -13,7 +13,6 @@ public class OrderRefundPaymentRequest {
 
     /** Refund amount. */
     private String amount;
-
 }
 
 

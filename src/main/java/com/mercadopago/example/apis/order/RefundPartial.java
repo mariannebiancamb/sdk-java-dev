@@ -28,7 +28,6 @@ public class RefundPartial {
                 .transactions(orderRefundTransactionRequests)
                 .build();
 
-
         Map<String, String> headers = new HashMap<>();
         headers.put("X-Sandbox", "true");
         headers.put("X-Idempotency-Key", "{{idempotency_key}}");
