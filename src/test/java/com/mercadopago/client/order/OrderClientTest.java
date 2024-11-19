@@ -238,8 +238,12 @@ class OrderClientTest extends BaseClientTest {
                 .transactions(Collections.singletonList(paymentRequest))
                 .build();
 
+        JsonObject payload = Serializer.serializeToJson(refundRequest);
         OrderRefund orderRefund = client.refund(orderId, refundRequest);
 
+        Assertions.assertNotNull(payload);
+        Assertions.assertTrue(payload.has("transactions"));
+        Assertions.assertEquals("50.00", payload.getAsJsonArray("transactions").get(0).getAsJsonObject().get("amount").getAsString());
         Assertions.assertNotNull(orderRefund);
         Assertions.assertEquals(HttpStatus.OK, orderRefund.getResponse().getStatusCode());
     }
