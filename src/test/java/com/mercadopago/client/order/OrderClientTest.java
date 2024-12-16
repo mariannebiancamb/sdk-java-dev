@@ -164,7 +164,7 @@ class OrderClientTest extends BaseClientTest {
         HttpResponse response = MockHelper.generateHttpResponse(HttpStatus.NO_CONTENT);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        String orderId = "01JC44RHN3TD6BHGH89A011FW3";
+        String orderId = "123";
         String transactionId = "pay_01JC44RS4MZE4Z7KJVCDP249FR";
 
         OrderTransaction result = client.deleteTransaction(orderId, transactionId);
@@ -179,7 +179,7 @@ class OrderClientTest extends BaseClientTest {
         HttpResponse response = MockHelper.generateHttpResponseFromFile(UPDATE_TRANSACTION_FILE, HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        String orderId = "01JC44RHN3TD6BHGH89A011FW3";
+        String orderId = "123";
         String transactionId = "pay_01JC44RS4MZE4Z7KJVCDP249FR";
 
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
@@ -212,13 +212,13 @@ class OrderClientTest extends BaseClientTest {
         HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_TOTAL_RESPONSE_FILE, HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        String id = "01JCK2RRKV10XVTEBJR598QH9Z";
+        String id = "123";
 
         OrderRefund orderRefund = client.refund(id);
 
         Assertions.assertNotNull(orderRefund);
         Assertions.assertEquals(HttpStatus.OK, orderRefund.getResponse().getStatusCode());
-        assertNotNull(orderRefund.getResponse());
+        Assertions.assertNotNull(orderRefund.getResponse());
         Assertions.assertEquals("refunded", orderRefund.getStatus());
         Assertions.assertEquals("ref_01JCK2SDVFSJGY54AMJCDR9X7R", orderRefund.getTransactions().getRefunds().get(0).getId());
     }
@@ -228,7 +228,7 @@ class OrderClientTest extends BaseClientTest {
         HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_PARTIAL_RESPONSE_FILE, HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        String orderId = "01JCK2RRKV10XVTEBJR598QH9Z";
+        String orderId = "123";
 
         OrderRefundPaymentRequest paymentRequest = OrderRefundPaymentRequest.builder()
                 .id("pay_01JCK2RRKV10XVTEBJR598QH9Z")
@@ -254,7 +254,6 @@ class OrderClientTest extends BaseClientTest {
         HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_TOTAL_RESPONSE_FILE, HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        String orderId = "01JCK2RRKV10XVTEBJR598QH9Z";
         OrderRefundRequest refundRequest = OrderRefundRequest.builder()
                 .transactions(Collections.singletonList(OrderRefundPaymentRequest.builder()
                         .id("pay_01JCK2RRKV10XVTEBJR598QH9Z")
@@ -304,9 +303,8 @@ class OrderClientTest extends BaseClientTest {
 
     @Test
     void validTransactionIDWithNullIdThrowsException() {
-        String nullId = null;
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            client.validateTransactionID(nullId);
+            client.validateTransactionID(null);
         });
         Assertions.assertEquals("Transaction id cannot be null or empty", exception.getMessage());
     }
