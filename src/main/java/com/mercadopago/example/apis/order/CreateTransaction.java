@@ -31,13 +31,11 @@ public class CreateTransaction{
                 .type("credit_card")
                 .token("{{CARD_TOKEN}}")
                 .installments(1)
-                .issuerId("123")
                 .statementDescriptor("statement")
                 .build();
 
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
                 .amount("100.00")
-                .currency("BRL")
                 .paymentMethod(paymentMethodRequest)
                 .build();
 

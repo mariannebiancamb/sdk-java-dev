@@ -5,9 +5,6 @@ import lombok.Getter;
 /** Address class. */
 @Getter
 public class Address {
-  /** Zip code. */
-  private String zipCode;
-
   /** Street name. */
   private String streetName;
 

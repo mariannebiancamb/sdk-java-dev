@@ -7,7 +7,6 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
 import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.order.Order;
-import com.mercadopago.resources.order.OrderRefund;
 import com.mercadopago.resources.order.OrderTransaction;
 import com.mercadopago.resources.order.UpdateOrderTransaction;
 import com.mercadopago.serialization.Serializer;
@@ -135,13 +134,11 @@ class OrderClientTest extends BaseClientTest {
         String orderId = "123";
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
                 .amount("100.00")
-                .currency("BRL")
                 .paymentMethod(OrderPaymentMethodRequest.builder()
                         .id("master")
                         .type("credit_card")
                         .token("some-token")
                         .installments(1)
-                        .issuerId("701")
                         .statementDescriptor("statement")
                         .build())
                 .build();
@@ -154,7 +151,6 @@ class OrderClientTest extends BaseClientTest {
 
         Assertions.assertNotNull(orderTransaction);
         Assertions.assertEquals("100.00", orderTransaction.getPayments().get(0).getAmount());
-        Assertions.assertEquals("BRL", orderTransaction.getPayments().get(0).getCurrency());
         Assertions.assertEquals("master", orderTransaction.getPayments().get(0).getPaymentMethod().getId());
     }
 
@@ -214,7 +210,7 @@ class OrderClientTest extends BaseClientTest {
 
         String id = "123";
 
-        OrderRefund orderRefund = client.refund(id);
+        Order orderRefund = client.refund(id);
 
         Assertions.assertNotNull(orderRefund);
         Assertions.assertEquals(HttpStatus.OK, orderRefund.getResponse().getStatusCode());
@@ -240,7 +236,7 @@ class OrderClientTest extends BaseClientTest {
                 .build();
 
         JsonObject payload = Serializer.serializeToJson(refundRequest);
-        OrderRefund orderRefund = client.refund(orderId, refundRequest);
+        Order orderRefund = client.refund(orderId, refundRequest);
 
         Assertions.assertNotNull(payload);
         Assertions.assertTrue(payload.has("transactions"));

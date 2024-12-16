@@ -36,44 +36,54 @@ That's it! Mercado Pago SDK has been successfully installed.
 Simple usage looks like:
 
 ```java
-import com.mercadopago.*;
+import com.mercadopago.MercadoPagoConfig;
+import com.mercadopago.client.order.*;
+import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.resources.order.Order;
 
-import com.mercadopago.client.payment.PaymentClient;
-import com.mercadopago.client.payment.PaymentCreateRequest;
-import com.mercadopago.client.payment.PaymentPayerRequest;
-import com.mercadopago.exceptions.MPApiException;
-import com.mercadopago.exceptions.MPException;
-import com.mercadopago.resources.payment.Payment;
-import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Example {
 
   public static void main(String[] args) {
-    MercadoPagoConfig.setAccessToken("YOUR_ACCESS_TOKEN");
+    MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
 
-    PaymentClient client = new PaymentClient();
+    OrderClient client = new OrderClient();
 
-    PaymentCreateRequest createRequest =
-        PaymentCreateRequest.builder()
-            .transactionAmount(new BigDecimal(1000))
-            .token("your_cardtoken")
-            .description("description")
+    OrderPaymentRequest payment = OrderPaymentRequest.builder()
+        .amount("10.00")
+        .paymentMethod(OrderPaymentMethodRequest.builder()
+            .id("master")
+            .type("credit_card")
+            .token("{{CARD_TOKEN}}")
             .installments(1)
-            .paymentMethodId("visa")
-            .payer(PaymentPayerRequest.builder().email("dummy_email").build())
-            .build();
+            .build())
+        .build();
+
+    List<OrderPaymentRequest> payments = new ArrayList<>();
+    payments.add(payment);
+
+    OrderCreateRequest request = OrderCreateRequest.builder()
+        .type("online")
+        .totalAmount("10.00")
+        .externalReference("ext_ref")
+        .payer(OrderPayerRequest.builder().email("{{EMAIL}}").build())
+        .transactions(OrderTransactionRequest.builder()
+            .payments(payments)
+            .build())
+        .build();
 
     try {
-      Payment payment = client.create(createRequest);
-      System.out.println(payment);
-    } catch (MPApiException ex) {
-      System.out.printf(
-          "MercadoPago Error. Status: %s, Content: %s%n",
-          ex.getApiResponse().getStatusCode(), ex.getApiResponse().getContent());
-    } catch (MPException ex) {
-      ex.printStackTrace();
+      Order order = client.create(request);
+      System.out.println("Order created: " + order.getId());
+    } catch (MPApiException | MPException e) {
+      System.out.println("Error creating order: " + e.getMessage());
     }
   }
+
 }
 ```
 
