@@ -14,6 +14,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Mercado Pago Update Order transaction.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/update-transaction/put">Documentation</a>
+ */
 public class UpdateTransaction {
 
     public static void main(String[] args) {
@@ -29,9 +34,7 @@ public class UpdateTransaction {
                 .build();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "{{SOME_UNIQUE_VALUE}}");
-        headers.put("X-Caller-SiteID", "MLB");
+        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)

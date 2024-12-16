@@ -10,6 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Mercado Pago Create Order transaction.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/create/post">Documentation</a>.
+ */
 public class CreateOrder {
 
     public static void main(String[] args) {
@@ -34,14 +39,13 @@ public class CreateOrder {
                 .type("online")
                 .totalAmount("10.00")
                 .externalReference("ext_ref")
-                .payer(OrderPayerRequest.builder().email("test@email.com").build())
+                .payer(OrderPayerRequest.builder().email("{{EMAIL}}").build())
                 .transactions(OrderTransactionRequest.builder()
                         .payments(payments)
                         .build())
                 .build();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-Sandbox", "true");
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)
                 .build();
