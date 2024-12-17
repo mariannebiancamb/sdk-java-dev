@@ -179,7 +179,7 @@ class OrderClientTest extends BaseClientTest {
         String transactionId = "pay_01JC44RS4MZE4Z7KJVCDP249FR";
 
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
-                .amount("980.00")
+                .paymentMethod(OrderPaymentMethodRequest.builder().installments(3).build())
                 .build();
 
         UpdateOrderTransaction updatedTransaction = client.updateTransaction(orderId, transactionId, paymentRequest);

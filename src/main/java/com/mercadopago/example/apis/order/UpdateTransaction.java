@@ -2,6 +2,7 @@ package com.mercadopago.example.apis.order;
 
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.order.OrderClient;
+import com.mercadopago.client.order.OrderPaymentMethodRequest;
 import com.mercadopago.client.order.OrderPaymentRequest;
 import com.mercadopago.client.order.OrderTransactionRequest;
 import com.mercadopago.core.MPRequestOptions;
@@ -30,8 +31,11 @@ public class UpdateTransaction {
         OrderClient client = new OrderClient();
 
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
-                .amount("50.00")
-                .build();
+            .paymentMethod(
+                OrderPaymentMethodRequest.builder()
+                    .installments(3)
+                    .build())
+            .build();
 
         Map<String, String> headers = new HashMap<>();
         headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
