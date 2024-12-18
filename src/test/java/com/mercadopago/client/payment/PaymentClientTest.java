@@ -621,6 +621,7 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals("100.0", payment.getAdditionalInfo().getItems().get(0).getUnitPrice().toString());
     assertEquals("11", payment.getAdditionalInfo().getPayer().getPhone().getAreaCode());
     assertEquals("987654321", payment.getAdditionalInfo().getPayer().getPhone().getNumber());
+    assertEquals("06233-200", payment.getAdditionalInfo().getPayer().getAddress().getZipCode());
     assertEquals(
         "Av. das Nações Unidas",
         payment.getAdditionalInfo().getPayer().getAddress().getStreetName());
@@ -628,6 +629,7 @@ public class PaymentClientTest extends BaseClientTest {
     assertEquals("Nome", payment.getAdditionalInfo().getPayer().getFirstName());
     assertEquals("Sobrenome", payment.getAdditionalInfo().getPayer().getLastName());
     assertEquals(date, payment.getAdditionalInfo().getPayer().getRegistrationDate());
+    assertEquals("95630000", payment.getAdditionalInfo().getShipments().getReceiverAddress().getZipCode());
     assertEquals(
         "são Luiz",
         payment.getAdditionalInfo().getShipments().getReceiverAddress().getStreetName());

@@ -2,15 +2,12 @@ package com.mercadopago.example.apis.order;
 
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.order.*;
-import com.mercadopago.core.MPRequestOptions;
 import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.order.Order;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Mercado Pago Create Order transaction.

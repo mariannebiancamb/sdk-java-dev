@@ -13,7 +13,7 @@ public class OrderItem {
     private String unitPrice;
 
     /** Quantity of the item. */
-    private int quantity;
+    private Integer quantity;
 
     /** ID of the item. */
     private String id;

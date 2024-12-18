@@ -19,6 +19,6 @@ public class OrderStoredCredentialRequest {
   /** Store Payment Method. */
   private Boolean storePaymentMethod;
 
-  /** First Payments. */
+  /** First Payment. */
   private Boolean firstPayment;
 }

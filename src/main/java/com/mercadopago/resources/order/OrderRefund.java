@@ -3,7 +3,7 @@ package com.mercadopago.resources.order;
 import com.mercadopago.net.MPResource;
 import lombok.Getter;
 
-/* API version: 54cea3ac-c258-4a6f-aea9-988e641cff30 */
+// API version: b950ae02-4f49-4686-9ad3-7929b21b6495
 
 /**
  * OrderRefund class.

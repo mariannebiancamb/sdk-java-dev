@@ -14,7 +14,7 @@ public class OrderSubscriptionDataRequest {
   private OrderSubscriptionSequenceRequest subscriptionSequence;
 
   /** Invoice ID. */
-  private String invoiceID;
+  private String invoiceId;
 
   /** Invoice Period. */
   private OrderInvoicePeriodRequest invoicePeriod;

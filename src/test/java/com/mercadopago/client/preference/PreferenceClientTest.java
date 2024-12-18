@@ -215,6 +215,7 @@ class PreferenceClientTest extends BaseClientTest {
     assertEquals("http://notificationurl.com", preference.getNotificationUrl());
     assertEquals("regular_payment", preference.getOperationType());
     assertEquals("11", preference.getPayer().getPhone().getAreaCode());
+    assertEquals("06233200", preference.getPayer().getAddress().getZipCode());
     assertEquals("Street", preference.getPayer().getAddress().getStreetName());
     assertEquals("123", preference.getPayer().getAddress().getStreetNumber());
     assertEquals("test_user_64585784@testuser.com", preference.getPayer().getEmail());
@@ -237,6 +238,7 @@ class PreferenceClientTest extends BaseClientTest {
     assertNull(preference.getShipments().getDefaultShippingMethod());
     assertEquals(BigDecimal.TEN, preference.getShipments().getCost());
     assertEquals("Street", preference.getShipments().getReceiverAddress().getStreetName());
+    assertEquals("06000000", preference.getShipments().getReceiverAddress().getZipCode());
     assertEquals("123", preference.getShipments().getReceiverAddress().getStreetNumber());
     assertEquals("12", preference.getShipments().getReceiverAddress().getFloor());
     assertEquals("120A", preference.getShipments().getReceiverAddress().getApartment());

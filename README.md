@@ -39,6 +39,8 @@ Simple usage looks like:
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.order.*;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.exceptions.MPApiException;
+import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.order.Order;
 
 import java.util.ArrayList;
@@ -76,8 +78,14 @@ public class Example {
             .build())
         .build();
 
+    Map<String, String> headers =  new HashMap<>();
+    headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
+
+    MPRequestOptions requestOptions = MPRequestOptions.builder()
+        .customHeaders(headers)
+        .build();
     try {
-      Order order = client.create(request);
+      Order order = client.create(request, requestOptions);
       System.out.println("Order created: " + order.getId());
     } catch (MPApiException | MPException e) {
       System.out.println("Error creating order: " + e.getMessage());
@@ -96,7 +104,7 @@ custom timeouts or even any custom headers you want, like an idempotency key for
 public class Example {
 
   public static void main(String[] args) {
-    PaymentClient client = new PaymentClient();
+    OrderClient client = new OrderClient();
 
     Map<String, String> customHeaders = new HashMap<>();
     customHeaders.put("x-idempotency-key", "...");
@@ -109,10 +117,11 @@ public class Example {
             .socketTimeout(2000)
             .customHeaders(customHeaders)
             .build();
-
+    
+    OrderCreateRequest createRequest = OrderCreateRequest.builder().build();
     try {
-      Payment payment = client.create(createRequest, requestOptions);
-      System.out.println(payment);
+      Order order = client.create(createRequest, requestOptions);
+      System.out.println(order);
     } catch (MPException | MPApiException ex) {
       ex.printStackTrace();
     }

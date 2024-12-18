@@ -2,6 +2,8 @@ package com.mercadopago.resources.order;
 
 import lombok.Getter;
 
+// API version: b950ae02-4f49-4686-9ad3-7929b21b6495
+
 /** OrderPaymentMethod class. */
 @Getter
 public class OrderPaymentMethod {
@@ -18,7 +20,7 @@ public class OrderPaymentMethod {
     private String issuerId;
 
     /** Number of installments. */
-    private int installments;
+    private Integer installments;
 
     /** How will look the payment in the card bill (e.g.: MERCADOPAGO).  */
     private String statementDescriptor;
@@ -49,10 +51,4 @@ public class OrderPaymentMethod {
 
     /** Payment method token. */
     private String token;
-
-
-
-
-
-
 }

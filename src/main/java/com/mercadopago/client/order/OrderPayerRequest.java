@@ -19,6 +19,9 @@ public class OrderPayerRequest {
     /** Payer's first name. */
     private String firstName;
 
+    /** Customer ID. */
+    private String customerId;
+
     /** Payer's last name. */
     private String lastName;
 
