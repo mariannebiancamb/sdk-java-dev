@@ -43,7 +43,7 @@ public class OrderCreateRequest extends MPResource {
     private String marketplaceFee;
 
     /** Items information. */
-    private List<OrderItemRequest> items;;
+    private List<OrderItemRequest> items;
 
     /** Expiration time of the order. */
     private String expirationTime;
