@@ -11,9 +11,16 @@ public class OrderPaymentRequest {
     /** Payment amount. */
     private String amount;
 
-    /** Payment currency. */
-    private String currency;
-
     /** Payment method information. */
     private OrderPaymentMethodRequest paymentMethod;
+
+    /** Automatic Payment method information. */
+    private OrderAutomaticPaymentsRequest automaticPayment;
+
+   /** Stored Credential information. */
+   private OrderStoredCredentialRequest storedCredential;
+
+    /** Subscription Data information. */
+    private OrderSubscriptionDataRequest subscriptionData;
+
 }

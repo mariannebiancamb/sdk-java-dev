@@ -13,20 +13,20 @@ public class OrderCreateRequest extends MPResource {
     /** Order type. */
     private String type;
 
-    /** Total amount of the order. */
-    private String totalAmount;
-
     /** Reference you can synchronize with your payment system. */
     private String externalReference;
-
-    /** Order type configuration. */
-    private OrderTypeConfigRequest typeConfig;
 
     /** Order transaction information. */
     private OrderTransactionRequest transactions;
 
-    /** Currency information. */
-    private String currency;
+    /** Payer's information. */
+    private OrderPayerRequest payer;
+
+    /** Total amount of the order. */
+    private String totalAmount;
+
+    /** Capture mode for transactions. */
+    private String captureMode;
 
     /** Configures which processing modes to use. */
     private String processingMode;
@@ -34,30 +34,22 @@ public class OrderCreateRequest extends MPResource {
     /** Description of the order. */
     private String description;
 
-    /** Payer's information. */
-    private OrderPayerRequest payer;
-
     /** Origin of the payment. */
     private String marketplace;
 
     /** Fee collected by a marketplace or MercadoPago Application. */
     private String marketplaceFee;
 
-    /** Discount campaign ID. */
-    private String campaignId;
-
     /** Items information. */
     private List<OrderItemRequest> items;
 
-    /** Coupon information. */
-    private OrderCouponRequest coupon;
+    /** Order config. */
+    private OrderConfigRequest config;
 
-    /** Information's about split payments. */
-    private List<OrderSplitRequest> splits;
-
-    /** Shipping information. */
-    private OrderShipmentRequest shipment;
+    /** Checkout available at */
+    private String checkoutAvailableAt;
 
     /** Expiration time of the order. */
     private String expirationTime;
+
 }

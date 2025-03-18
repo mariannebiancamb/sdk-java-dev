@@ -20,9 +20,6 @@ public class OrderPaymentMethodRequest {
     /** Number of installments. */
     private int installments;
 
-    /** Payment method issuer. */
-    private String issuerId;
-
     /** How will look the payment in the card bill (e.g.: MERCADOPAGO).  */
     private String statementDescriptor;
 }
