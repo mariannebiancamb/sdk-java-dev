@@ -15,32 +15,31 @@ public class CaptureOrder {
     public static void main(String[] args) {
         MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
 
+        System.out.println("Initializing OrderClient...");
         OrderClient client = new OrderClient();
 
+        System.out.println("Creating OrderPaymentRequest...");
         OrderPaymentRequest payment = OrderPaymentRequest.builder()
-                .amount("10.00")
+                .amount("1000.00")
                 .paymentMethod(OrderPaymentMethodRequest.builder()
-                        .id("visa")
+                        .id("master")
                         .type("credit_card")
-                        .token("{{CARD_TOKEN}}")
+                        .token("2a6a062fb27b728ae8b031f1961a0ea5")
                         .installments(1)
+                        .statementDescriptor("statement")
                         .build())
                 .build();
 
         List<OrderPaymentRequest> payments = new ArrayList<>();
         payments.add(payment);
 
-        OrderTypeConfigRequest typeConfig = OrderTypeConfigRequest.builder()
-                .captureMode("manual")
-                .build();
-
         OrderCreateRequest request = OrderCreateRequest.builder()
                 .type("online")
                 .processingMode("automatic")
-                .totalAmount("10.00")
-                .typeConfig(typeConfig)
+                .captureMode("manual")
+                .totalAmount("1000.00")
                 .externalReference("ext_ref")
-                .payer(OrderPayerRequest.builder().email("test@test.com").build())
+                .payer(OrderPayerRequest.builder().email("jota2@testuser.com").build())
                 .transactions(OrderTransactionRequest.builder()
                         .payments(payments)
                         .build())
@@ -48,8 +47,8 @@ public class CaptureOrder {
 
         Map<String, String> headers = new HashMap<>();
         headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
-        headers.put("X-Caller-SiteID", "{{SITE_ID}}");
+        headers.put("X-Idempotency-Key", "{{Idempoency_Key}}");
+
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)
                 .build();
@@ -57,10 +56,19 @@ public class CaptureOrder {
         try {
             Order order = client.create(request, requestOptions);
             System.out.println("Order created: " + order.getId());
+            System.out.println("Order status: " + order.getStatus());
+            System.out.println("Order status: " + order.getStatusDetail());
+
+            // Capture Order
             Order capturedOrder = client.capture(order.getId(), requestOptions);
             System.out.println("Captured order: " + capturedOrder.getId());
+            System.out.println("Captured order status: " + capturedOrder.getStatus());
+            System.out.println("Captured order status: " + capturedOrder.getStatusDetail());
         } catch (Exception e) {
             System.out.println("Error creating order: " + e.getMessage());
+            System.out.println("Cause: " + e.getCause());
+            System.out.println("Stack Trace: " + e.getStackTrace());
+            System.out.println("Error cause: " + e.getCause());
         }
 
     }

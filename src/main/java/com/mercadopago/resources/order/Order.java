@@ -14,11 +14,44 @@ public class Order extends MPResource {
     /** Order ID. */
     private String id;
 
+    /** Type of Order. */
+    private String type;
+
     /** Configures which processing modes to use. */
     private String processingMode;
 
     /** External reference. */
     private String externalReference;
+
+    /** Total amount of the order. */
+    private String totalAmount;
+
+    /** Total Paid amount of the order. */
+    private String totalPaidAmount;
+
+    /** Identifier of the site (country) to which the Mercado Pago application that created the Order belongs. */
+    private String countryCode;
+
+    /** Identifier of the user to which the Mercado Pago application that created the Order belongs. It is the person that will receive the payment. */
+    private String userId;
+
+    /** Status of Order. */
+    private String status;
+
+    /** Status Detail of Order. */
+    private String statusDetail;
+
+    /** Order capture mode. */
+    private String captureMode;
+
+    /** Date of creation. */
+    private String createdDate;
+
+    /** Last modified date. */
+    private String lastUpdatedDate;
+
+    /** Additional information that can be used to integrate with other systems, such as the identifier of the Order in the integrator's system. */
+    private OrderIntegrationData integrationData;
 
     /** Description of Order. */
     private String description;
@@ -29,11 +62,19 @@ public class Order extends MPResource {
     /** Fee collected by a marketplace or MercadoPago Application. */
     private String marketplaceFee;
 
+    /** Transactions information. */
+    private OrderTransaction transactions;
+
+    /** Items information. */
+    private List<OrderItem> items;
+
+
+    //
+    //
+
+
     /** Campaign ID. */
     private String campaignId;
-
-    /** Total amount of the order. */
-    private String totalAmount;
 
     /** Currency information. */
     private String currency;
@@ -50,30 +91,12 @@ public class Order extends MPResource {
     /** ID of the collector associated with the order. */
     private String collectorId;
 
-    /** Date of creation. */
-    private String createdDate;
-
-    /** Last modified date. */
-    private String lastUpdatedDate;
-
-    /** Type of Order. */
-    private String type;
-
-    /** Status of Order. */
-    private String status;
-
     /** Order type configuration. */
     private OrderTypeConfig typeConfig;
 
     /** Payer information. */
     private OrderPayer payer;
 
-    /** Transactions information. */
-    private OrderTransaction transactions;
-
     /** Shipping information. */
     private OrderShipment shipment;
-
-    /** Items information. */
-    private List<OrderItem> items;
 }

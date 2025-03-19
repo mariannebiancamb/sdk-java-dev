@@ -12,6 +12,9 @@ public class OrderPayment {
     /** Payment amount. */
     private String amount;
 
+    /** Paid amount. */
+    private String paidAmount;
+
     /** Payment currency. */
     private String currency;
 
