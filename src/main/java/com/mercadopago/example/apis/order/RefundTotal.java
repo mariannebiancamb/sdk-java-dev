@@ -26,7 +26,7 @@ public class RefundTotal {
            OrderRefund order = client.refund(orderId, requestOptions);
             System.out.println("Order successfully refunded.");
             System.out.println("Status: " + order.getStatus());
-            System.out.println("Status Detail: " + order.getStatus_detail());
+            System.out.println("Status Detail: " + order.getStatusDetail());
         } catch (Exception e) {
             System.out.println("Error while refunding order: " + e.getMessage());
         }

@@ -7,6 +7,7 @@ import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.CardToken;
 import com.mercadopago.resources.order.Order;
+import com.mercadopago.resources.order.OrderRefund;
 import com.mercadopago.resources.order.OrderTransaction;
 import com.mercadopago.resources.order.UpdateOrderTransaction;
 import org.junit.jupiter.api.Test;
@@ -270,7 +271,7 @@ public class OrderClientIT extends BaseClientIT {
 
       Order order = client.create(orderCreateRequest);
       Thread.sleep(3000);
-      Order refundedOrder = client.refund(order.getId());
+      OrderRefund refundedOrder = client.refund(order.getId());
 
       assertNotNull(refundedOrder.getResponse());
       assertEquals(CREATED, refundedOrder.getResponse().getStatusCode());
@@ -323,7 +324,7 @@ public class OrderClientIT extends BaseClientIT {
       OrderRefundRequest orderRefundRequest = OrderRefundRequest.builder()
               .transactions(refundPaymentRequest)
               .build();
-      Order refundedOrder = client.refund(order.getId(), orderRefundRequest);
+      OrderRefund refundedOrder = client.refund(order.getId(), orderRefundRequest);
 
       assertNotNull(refundedOrder.getResponse());
       assertEquals(CREATED, refundedOrder.getResponse().getStatusCode());

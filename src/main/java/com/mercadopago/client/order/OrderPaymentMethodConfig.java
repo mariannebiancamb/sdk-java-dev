@@ -5,7 +5,7 @@ import lombok.Builder;
 import lombok.Getter;
 
 import java.util.List;
-
+// API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
 /** OrderPaymentMethodConfig class. */
 @Builder
 @Getter
@@ -17,7 +17,7 @@ public class OrderPaymentMethodConfig {
 
     private String defaultId;
 
-    private int maxInstallments;
+    private Integer maxInstallments;
 
-    private int defaultInstallments;
+    private Integer defaultInstallments;
 }

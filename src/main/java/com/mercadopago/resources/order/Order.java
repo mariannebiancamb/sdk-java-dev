@@ -5,7 +5,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-/* API version: 54cea3ac-c258-4a6f-aea9-988e641cff30 */
+/* API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32 */
 
 /** Order class. */
 @Getter
@@ -13,7 +13,6 @@ public class Order extends MPResource {
 
     /** Order ID. */
     private String id;
-
 
     /** Type of Order. */
     private String type;
@@ -72,14 +71,17 @@ public class Order extends MPResource {
     /** Currency information. */
     private String currency;
 
+    /** checkout available at */
+    private String checkoutAvailableAt;
+
     /** Date of expiration. */
     private String expirationTime;
 
     /** Site ID. */
     private String siteId;
 
-    /** Unique ID that identifies your integration. You can get it in Your credentials. */
-    private String clientId;
+    /** Unique token that identifies your integration. You can get it in Your credentials. */
+    private String clientToken;
 
     /** ID of the collector associated with the order. */
     private String collectorId;
@@ -89,7 +91,10 @@ public class Order extends MPResource {
 
     /** Shipping information. */
     private OrderShipment shipment;
+
     /** Items information. */
     private List<OrderItem> items;
 
+    /** Transactions information. */
+    private OrderConfig config;
 }
