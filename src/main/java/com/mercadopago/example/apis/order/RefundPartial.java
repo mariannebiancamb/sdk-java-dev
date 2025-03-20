@@ -17,7 +17,7 @@ public class RefundPartial {
         OrderClient client = new OrderClient();
 
         OrderRefundPaymentRequest refundRequest = OrderRefundPaymentRequest.builder()
-                .id("{{payment_id}}")
+                .id("{{transaction_id}}")
                 .amount("10.00")
                 .build();
 
@@ -29,7 +29,6 @@ public class RefundPartial {
                 .build();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-Sandbox", "true");
         headers.put("X-Idempotency-Key", "{{idempotency_key}}");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()

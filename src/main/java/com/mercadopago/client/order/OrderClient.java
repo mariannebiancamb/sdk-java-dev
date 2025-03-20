@@ -215,7 +215,7 @@ public class OrderClient extends MercadoPagoClient {
 
         MPRequest mpRequest = MPRequest.builder()
                 .uri(url)
-                .method(HttpMethod.PATCH)
+                .method(HttpMethod.PUT)
                 .payload(Serializer.serializeToJson(request))
                 .build();
 

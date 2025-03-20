@@ -18,17 +18,8 @@ public class DeleteTransaction {
 
         OrderClient client = new OrderClient();
 
-        Map<String, String> headers = new HashMap<>();
-        headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "1234569999");
-        headers.put("X-Caller-SiteID", "MLB");
-
-        MPRequestOptions requestOptions = MPRequestOptions.builder()
-                .customHeaders(headers)
-                .build();
-
         try {
-            client.deleteTransaction(orderId, transactionId, requestOptions);
+            client.deleteTransaction(orderId, transactionId);
             System.out.println("Transaction successfully deleted.");
         } catch (MPApiException e) {
             System.out.println("API error while deleting transaction: " + e.getMessage());

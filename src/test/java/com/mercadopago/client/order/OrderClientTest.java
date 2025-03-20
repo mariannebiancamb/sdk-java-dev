@@ -60,7 +60,7 @@ class OrderClientTest extends BaseClientTest {
                 .paymentMethod(OrderPaymentMethodRequest.builder()
                         .id("master")
                         .type("credit_card")
-                        .token("card_token")
+                        .token("2b6513e50c0c9bfeb8b800032a611cd4")
                         .installments(1)
                         .build())
                 .build();
@@ -134,13 +134,11 @@ class OrderClientTest extends BaseClientTest {
         String orderId = "123";
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
                 .amount("100.00")
-                .currency("BRL")
                 .paymentMethod(OrderPaymentMethodRequest.builder()
                         .id("master")
                         .type("credit_card")
                         .token("some-token")
                         .installments(1)
-                        .issuerId("701")
                         .statementDescriptor("statement")
                         .build())
                 .build();
@@ -217,7 +215,7 @@ class OrderClientTest extends BaseClientTest {
 
         Assertions.assertNotNull(orderRefund);
         Assertions.assertEquals(HttpStatus.OK, orderRefund.getResponse().getStatusCode());
-        assertNotNull(orderRefund.getResponse());
+        Assertions.assertNotNull(orderRefund.getResponse());
         Assertions.assertEquals("refunded", orderRefund.getStatus());
         Assertions.assertEquals("ref_01JCK2SDVFSJGY54AMJCDR9X7R", orderRefund.getTransactions().getRefunds().get(0).getId());
     }

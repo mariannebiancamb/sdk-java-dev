@@ -2,6 +2,7 @@ package com.mercadopago.example.apis.order;
 
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.order.OrderClient;
+import com.mercadopago.client.order.OrderPaymentMethodRequest;
 import com.mercadopago.client.order.OrderPaymentRequest;
 import com.mercadopago.client.order.OrderTransactionRequest;
 import com.mercadopago.core.MPRequestOptions;
@@ -16,21 +17,23 @@ import java.util.Map;
 public class UpdateTransaction {
 
     public static void main(String[] args) {
-        MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
+        MercadoPagoConfig.setAccessToken("ACCESS_TOKEN");
 
-        String orderId = "{{ORDER_ID}}";
-        String transactionId = "{{TRANSACTION_ID}}";
+        String orderId = "{{order_id}}";
+        String transactionId = "{{transaction_id}}";
 
         OrderClient client = new OrderClient();
 
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
-                .amount("50.00")
+                .paymentMethod(OrderPaymentMethodRequest.builder()
+                        .type("credit_card")
+                        .installments(8)
+                        .statementDescriptor("statement")
+                        .build())
                 .build();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "{{SOME_UNIQUE_VALUE}}");
-        headers.put("X-Caller-SiteID", "MLB");
+        headers.put("X-Idempotency-Key", "{{idempotency-key}}");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)
