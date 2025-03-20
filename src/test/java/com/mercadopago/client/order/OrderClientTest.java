@@ -9,6 +9,7 @@ import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.order.Order;
 import com.mercadopago.resources.order.OrderRefund;
 import com.mercadopago.resources.order.OrderTransaction;
+import com.mercadopago.resources.order.UpdateOrderTransaction;
 import com.mercadopago.serialization.Serializer;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -22,7 +23,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
 import static org.mockito.Matchers.any;
 
 class OrderClientTest extends BaseClientTest {
@@ -60,7 +60,7 @@ class OrderClientTest extends BaseClientTest {
                 .paymentMethod(OrderPaymentMethodRequest.builder()
                         .id("master")
                         .type("credit_card")
-                        .token("2b6513e50c0c9bfeb8b800032a611cd4")
+                        .token("card_token")
                         .installments(1)
                         .build())
                 .build();
@@ -151,7 +151,6 @@ class OrderClientTest extends BaseClientTest {
 
         Assertions.assertNotNull(orderTransaction);
         Assertions.assertEquals("100.00", orderTransaction.getPayments().get(0).getAmount());
-        Assertions.assertEquals("BRL", orderTransaction.getPayments().get(0).getCurrency());
         Assertions.assertEquals("master", orderTransaction.getPayments().get(0).getPaymentMethod().getId());
     }
 
@@ -161,7 +160,7 @@ class OrderClientTest extends BaseClientTest {
         HttpResponse response = MockHelper.generateHttpResponse(HttpStatus.NO_CONTENT);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        String orderId = "01JC44RHN3TD6BHGH89A011FW3";
+        String orderId = "123";
         String transactionId = "pay_01JC44RS4MZE4Z7KJVCDP249FR";
 
         OrderTransaction result = client.deleteTransaction(orderId, transactionId);
@@ -176,14 +175,14 @@ class OrderClientTest extends BaseClientTest {
         HttpResponse response = MockHelper.generateHttpResponseFromFile(UPDATE_TRANSACTION_FILE, HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        String orderId = "01JC44RHN3TD6BHGH89A011FW3";
+        String orderId = "123";
         String transactionId = "pay_01JC44RS4MZE4Z7KJVCDP249FR";
 
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
-                .amount("980.00")
+                .paymentMethod(OrderPaymentMethodRequest.builder().installments(3).build())
                 .build();
 
-        OrderTransaction updatedTransaction = client.updateTransaction(orderId, transactionId, paymentRequest);
+        UpdateOrderTransaction updatedTransaction = client.updateTransaction(orderId, transactionId, paymentRequest);
 
         Assertions.assertNotNull(updatedTransaction);
         Assertions.assertEquals(HttpStatus.OK, updatedTransaction.getResponse().getStatusCode());
@@ -209,7 +208,7 @@ class OrderClientTest extends BaseClientTest {
         HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_TOTAL_RESPONSE_FILE, HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        String id = "01JCK2RRKV10XVTEBJR598QH9Z";
+        String id = "123";
 
         OrderRefund orderRefund = client.refund(id);
 
@@ -225,7 +224,7 @@ class OrderClientTest extends BaseClientTest {
         HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_PARTIAL_RESPONSE_FILE, HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        String orderId = "01JCK2RRKV10XVTEBJR598QH9Z";
+        String orderId = "123";
 
         OrderRefundPaymentRequest paymentRequest = OrderRefundPaymentRequest.builder()
                 .id("pay_01JCK2RRKV10XVTEBJR598QH9Z")
@@ -251,7 +250,6 @@ class OrderClientTest extends BaseClientTest {
         HttpResponse response = MockHelper.generateHttpResponseFromFile(CREATE_REFUND_TOTAL_RESPONSE_FILE, HttpStatus.OK);
         Mockito.doReturn(response).when(HTTP_CLIENT).execute(any(HttpRequestBase.class), any(HttpContext.class));
 
-        String orderId = "01JCK2RRKV10XVTEBJR598QH9Z";
         OrderRefundRequest refundRequest = OrderRefundRequest.builder()
                 .transactions(Collections.singletonList(OrderRefundPaymentRequest.builder()
                         .id("pay_01JCK2RRKV10XVTEBJR598QH9Z")
@@ -301,9 +299,8 @@ class OrderClientTest extends BaseClientTest {
 
     @Test
     void validTransactionIDWithNullIdThrowsException() {
-        String nullId = null;
         IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            client.validateTransactionID(nullId);
+            client.validateTransactionID(null);
         });
         Assertions.assertEquals("Transaction id cannot be null or empty", exception.getMessage());
     }

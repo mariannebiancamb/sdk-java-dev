@@ -6,6 +6,8 @@ import lombok.Getter;
 
 import java.util.List;
 
+// API version: b950ae02-4f49-4686-9ad3-7929b21b6495
+
 /** Order class. */
 @Builder
 @Getter
@@ -25,7 +27,7 @@ public class OrderCreateRequest extends MPResource {
     /** Total amount of the order. */
     private String totalAmount;
 
-    /** Capture mode for transactions. */
+    /** Capture mode. */
     private String captureMode;
 
     /** Configures which processing modes to use. */
@@ -51,5 +53,4 @@ public class OrderCreateRequest extends MPResource {
 
     /** Expiration time of the order. */
     private String expirationTime;
-
 }

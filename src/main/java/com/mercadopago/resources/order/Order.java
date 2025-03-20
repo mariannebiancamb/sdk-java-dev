@@ -5,7 +5,7 @@ import lombok.Getter;
 
 import java.util.List;
 
-/* Swagger version: 54cea3ac-c258-4a6f-aea9-988e641cff30 */
+/* API version: 54cea3ac-c258-4a6f-aea9-988e641cff30 */
 
 /** Order class. */
 @Getter
@@ -14,11 +14,9 @@ public class Order extends MPResource {
     /** Order ID. */
     private String id;
 
+
     /** Type of Order. */
     private String type;
-
-    /** Configures which processing modes to use. */
-    private String processingMode;
 
     /** External reference. */
     private String externalReference;
@@ -53,6 +51,9 @@ public class Order extends MPResource {
     /** Additional information that can be used to integrate with other systems, such as the identifier of the Order in the integrator's system. */
     private OrderIntegrationData integrationData;
 
+    /** Configures which processing modes to use. */
+    private String processingMode;
+
     /** Description of Order. */
     private String description;
 
@@ -64,14 +65,6 @@ public class Order extends MPResource {
 
     /** Transactions information. */
     private OrderTransaction transactions;
-
-    /** Items information. */
-    private List<OrderItem> items;
-
-
-    //
-    //
-
 
     /** Campaign ID. */
     private String campaignId;
@@ -91,12 +84,12 @@ public class Order extends MPResource {
     /** ID of the collector associated with the order. */
     private String collectorId;
 
-    /** Order type configuration. */
-    private OrderTypeConfig typeConfig;
-
     /** Payer information. */
     private OrderPayer payer;
 
     /** Shipping information. */
     private OrderShipment shipment;
+    /** Items information. */
+    private List<OrderItem> items;
+
 }

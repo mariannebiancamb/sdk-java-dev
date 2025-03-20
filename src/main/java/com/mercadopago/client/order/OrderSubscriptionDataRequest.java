@@ -6,18 +6,23 @@ import lombok.Builder;
 import lombok.Getter;
 
 /** OrderAutomaticPaymentsRequest class. */
+// API version: b950ae02-4f49-4686-9ad3-7929b21b6495
+
+/** OrderSubscriptionDataRequest class. */
 @Getter
 @Builder
 public class OrderSubscriptionDataRequest {
-        /** Subscription sequence. */
-        private SubscriptionSequence subscriptionSequence;
 
-        /** Invoice ID. */
-        private String invoiceId;
+  /** Subscription Sequence. */
+  private OrderSubscriptionSequenceRequest subscriptionSequence;
 
-        /** Invoice period. */
-        private InvoicePeriod invoicePeriod;
+  /** Invoice ID. */
+  private String invoiceId;
 
-        /** Billing date. */
-        private String billingDate;
+  /** Invoice Period. */
+  private OrderInvoicePeriodRequest invoicePeriod;
+
+  /** Billing Date. */
+  private String billingDate;
+
 }

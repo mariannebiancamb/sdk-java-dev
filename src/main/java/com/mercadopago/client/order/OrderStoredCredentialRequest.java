@@ -3,21 +3,22 @@ package com.mercadopago.client.order;
 import lombok.Builder;
 import lombok.Getter;
 
+// API version: b950ae02-4f49-4686-9ad3-7929b21b6495
+
 /** OrderStoredCredentialRequest class. */
 @Getter
 @Builder
 public class OrderStoredCredentialRequest {
 
-    /** Order Stored Credential Payment initiator. */
-    private String paymentInitiator;
+  /** Payment Initiator. */
+  private String paymentInitiator;
 
-    /** Order Stored Credential Reason for the payment. */
-    private String reason;
+  /** Reason. */
+  private String reason;
 
-    /** Order Stored Credential Store payment method flag. */
-    private boolean storePaymentMethod;
+  /** Store Payment Method. */
+  private Boolean storePaymentMethod;
 
-    /** Order Stored Credential First payment flag. */
-    private boolean firstPayment;
+  /** First Payment. */
+  private Boolean firstPayment;
 }
-
