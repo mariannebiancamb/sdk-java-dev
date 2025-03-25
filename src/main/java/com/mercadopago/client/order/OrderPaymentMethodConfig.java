@@ -11,13 +11,18 @@ import java.util.List;
 @Getter
 public class OrderPaymentMethodConfig {
 
+    /** Not allowed IDs. */
     private List<String> notAllowedIds;
 
+    /** Not allowed types. */
     private List<String> notAllowedTypes;
 
+    /** Default ID. */
     private String defaultId;
 
+    /** Max installments. */
     private Integer maxInstallments;
 
+    /** Default installments. */
     private Integer defaultInstallments;
 }
