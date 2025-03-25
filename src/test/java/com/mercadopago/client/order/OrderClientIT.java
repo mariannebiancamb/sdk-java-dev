@@ -278,7 +278,6 @@ public class OrderClientIT extends BaseClientIT {
       assertEquals(order.getId(), refundedOrder.getId());
       assertEquals("refunded", refundedOrder.getStatus());
       assertEquals("refunded", refundedOrder.getStatusDetail());
-      assertEquals("processed", refundedOrder.getTransactions().getRefunds().get(0).getStatus());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException | InterruptedException e) {
@@ -331,7 +330,6 @@ public class OrderClientIT extends BaseClientIT {
       assertEquals(order.getId(), refundedOrder.getId());
       assertEquals("processed", refundedOrder.getStatus());
       assertEquals("partially_refunded", refundedOrder.getStatusDetail());
-      assertEquals("processed", refundedOrder.getTransactions().getRefunds().get(0).getStatus());
     } catch (MPApiException mpApiException) {
       fail(mpApiException.getApiResponse().getContent());
     } catch (MPException | InterruptedException e) {

@@ -13,6 +13,9 @@ public class OrderPaymentRequest {
     /** Payment amount. */
     private String amount;
 
+    /** Payment expirationTime. */
+    private String expirationTime;
+
     /** Payment method information. */
     private OrderPaymentMethodRequest paymentMethod;
 

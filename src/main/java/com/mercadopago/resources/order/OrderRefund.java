@@ -28,7 +28,4 @@ public class OrderRefund extends MPResource {
 
     /** Refund status detail. */
     private String statusDetail;
-
-    /** Object Order Transaction Refund. */
-    private OrderTransactionRefund transactions;
 }

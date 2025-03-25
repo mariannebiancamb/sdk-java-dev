@@ -45,5 +45,8 @@ public class OrderPaymentMethod {
 
     /** Digitable Line. */
     private String digitableLine;
-    
+
+    /** Ticket Url. */
+    private String ticketUrl;
+
 }
