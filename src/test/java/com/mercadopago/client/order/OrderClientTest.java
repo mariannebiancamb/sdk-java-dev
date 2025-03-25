@@ -216,7 +216,6 @@ class OrderClientTest extends BaseClientTest {
         Assertions.assertEquals(HttpStatus.OK, orderRefund.getResponse().getStatusCode());
         Assertions.assertNotNull(orderRefund.getResponse());
         Assertions.assertEquals("refunded", orderRefund.getStatus());
-        Assertions.assertEquals("ref_01JCK2SDVFSJGY54AMJCDR9X7R", orderRefund.getId());
     }
 
     @Test

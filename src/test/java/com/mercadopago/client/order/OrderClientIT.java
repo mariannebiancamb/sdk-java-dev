@@ -271,7 +271,7 @@ public class OrderClientIT extends BaseClientIT {
 
       Order order = client.create(orderCreateRequest);
       Thread.sleep(3000);
-      OrderRefund refundedOrder = client.refund(order.getId());
+      Order refundedOrder = client.refund(order.getId());
 
       assertNotNull(refundedOrder.getResponse());
       assertEquals(CREATED, refundedOrder.getResponse().getStatusCode());
@@ -323,7 +323,7 @@ public class OrderClientIT extends BaseClientIT {
       OrderRefundRequest orderRefundRequest = OrderRefundRequest.builder()
               .transactions(refundPaymentRequest)
               .build();
-      OrderRefund refundedOrder = client.refund(order.getId(), orderRefundRequest);
+      Order refundedOrder = client.refund(order.getId(), orderRefundRequest);
 
       assertNotNull(refundedOrder.getResponse());
       assertEquals(CREATED, refundedOrder.getResponse().getStatusCode());
