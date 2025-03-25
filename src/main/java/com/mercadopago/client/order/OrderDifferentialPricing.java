@@ -9,5 +9,5 @@ import lombok.Getter;
 public class OrderDifferentialPricing {
 
     /** Differential pricing ID. */
-    private int id;
+    private Integer id;
 }

@@ -18,4 +18,10 @@ public class OrderPaymentRequest {
 
     /** Automatic Payments information. */
     private OrderAutomaticPaymentsRequest automaticPayments;
+
+    /** Stored Credential information. */
+    private OrderStoredCredentialRequest storedCredential;
+
+    /** Subscription Data information. */
+    private OrderSubscriptionDataRequest subscriptionData;
 }

@@ -65,36 +65,18 @@ public class Order extends MPResource {
     /** Transactions information. */
     private OrderTransaction transactions;
 
-    /** Campaign ID. */
-    private String campaignId;
-
-    /** Currency information. */
-    private String currency;
-
-    /** checkout available at */
+    /** Checkout available at */
     private String checkoutAvailableAt;
 
     /** Date of expiration. */
     private String expirationTime;
 
-    /** Site ID. */
-    private String siteId;
-
     /** Unique token that identifies your integration. You can get it in Your credentials. */
     private String clientToken;
-
-    /** ID of the collector associated with the order. */
-    private String collectorId;
-
-    /** Payer information. */
-    private OrderPayer payer;
-
-    /** Shipping information. */
-    private OrderShipment shipment;
 
     /** Items information. */
     private List<OrderItem> items;
 
-    /** Transactions information. */
+    /** Order config. */
     private OrderConfig config;
 }

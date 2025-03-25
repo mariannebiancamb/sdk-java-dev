@@ -13,4 +13,19 @@ public class OrderPayment {
 
     /** Payment method information. */
     private OrderPaymentMethod paymentMethod;
+
+    /** Payment ID. */
+    private String id;
+
+    /** Reference ID. */
+    private String referenceId;
+
+    /** Payment status. */
+    private String status;
+
+    /** Payment status detail. */
+    private String statusDetail;
+
+    /** Payment date of expiration. */
+    private String dateOfExpiration;
 }

@@ -10,6 +10,9 @@ public class OrderPaymentMethod {
     /** Payment method ID. */
     private String id;
 
+    /** Card ID. */
+    private String cardId;
+
     /** Payment method type. */
     private String type;
 
@@ -21,4 +24,26 @@ public class OrderPaymentMethod {
 
     /** How will look the payment in the card bill (e.g.: MERCADOPAGO).  */
     private String statementDescriptor;
+
+    /** Barcode Content. */
+    private String barcodeContent;
+
+    /** Reference. */
+    private String reference;
+
+    /** Verification Code. */
+    private String verificationCode;
+
+    /** Financial Institution. */
+    private String financialInstitution;
+
+    /** QR Code. */
+    private String qrCode;
+
+    /** QR Code Base64. */
+    private String qrCodeBase64;
+
+    /** Digitable Line. */
+    private String digitableLine;
+    
 }
