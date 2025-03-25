@@ -48,7 +48,7 @@ public class OrderCreateRequest extends MPResource {
     /** Order config. */
     private OrderConfigRequest config;
 
-    /** Checkout available at */
+    /** Checkout available at. */
     private String checkoutAvailableAt;
 
     /** Expiration time of the order. */

@@ -15,10 +15,15 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Mercado Pago Update Order transaction.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/update-transaction/put">Documentation</a>
+ */
 public class UpdateTransaction {
 
     public static void main(String[] args) {
-        MercadoPagoConfig.setAccessToken("ACCESS_TOKEN");
+        MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
 
         String orderId = "{{order_id}}";
         String transactionId = "{{transaction_id}}";
@@ -34,7 +39,7 @@ public class UpdateTransaction {
                 .build();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-Idempotency-Key", "{{idempotency-key}}");
+        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)

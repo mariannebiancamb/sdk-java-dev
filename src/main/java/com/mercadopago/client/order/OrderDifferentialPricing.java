@@ -3,11 +3,11 @@ package com.mercadopago.client.order;
 import lombok.Builder;
 import lombok.Getter;
 
-/** Order OrderDifferentialPricing class. */
+/** OrderDifferentialPricing class. */
 @Getter
 @Builder
 public class OrderDifferentialPricing {
 
+    /** Differential pricing ID. */
     private int id;
-
 }

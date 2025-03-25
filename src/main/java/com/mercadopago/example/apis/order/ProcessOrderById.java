@@ -6,6 +6,11 @@ import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.resources.order.Order;
 
+/**
+ * Mercado Pago Process Order.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online/process-order/post">Documentation</a>
+ */
 public class ProcessOrderById {
 
     public static void main(String[] args) {

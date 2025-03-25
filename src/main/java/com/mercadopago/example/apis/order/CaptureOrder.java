@@ -10,6 +10,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Mercado Pago Capture Order.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/capture/post">Documentation</a>
+ */
 public class CaptureOrder {
 
     public static void main(String[] args) {
@@ -24,7 +29,7 @@ public class CaptureOrder {
                 .paymentMethod(OrderPaymentMethodRequest.builder()
                         .id("master")
                         .type("credit_card")
-                        .token("2a6a062fb27b728ae8b031f1961a0ea5")
+                        .token("{{CARD_TOKEN}}")
                         .installments(1)
                         .statementDescriptor("statement")
                         .build())
@@ -39,15 +44,14 @@ public class CaptureOrder {
                 .captureMode("manual")
                 .totalAmount("1000.00")
                 .externalReference("ext_ref")
-                .payer(OrderPayerRequest.builder().email("jota2@testuser.com").build())
+                .payer(OrderPayerRequest.builder().email("{{PAYER_EMAIL}}").build())
                 .transactions(OrderTransactionRequest.builder()
                         .payments(payments)
                         .build())
                 .build();
 
         Map<String, String> headers = new HashMap<>();
-        headers.put("X-Sandbox", "true");
-        headers.put("X-Idempotency-Key", "{{Idempoency_Key}}");
+        headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");
 
         MPRequestOptions requestOptions = MPRequestOptions.builder()
                 .customHeaders(headers)
@@ -57,13 +61,13 @@ public class CaptureOrder {
             Order order = client.create(request, requestOptions);
             System.out.println("Order created: " + order.getId());
             System.out.println("Order status: " + order.getStatus());
-            System.out.println("Order status: " + order.getStatusDetail());
+            System.out.println("Order status detail: " + order.getStatusDetail());
 
             // Capture Order
             Order capturedOrder = client.capture(order.getId(), requestOptions);
             System.out.println("Captured order: " + capturedOrder.getId());
             System.out.println("Captured order status: " + capturedOrder.getStatus());
-            System.out.println("Captured order status: " + capturedOrder.getStatusDetail());
+            System.out.println("Captured order status detail: " + capturedOrder.getStatusDetail());
         } catch (Exception e) {
             System.out.println("Error creating order: " + e.getMessage());
             System.out.println("Cause: " + e.getCause());

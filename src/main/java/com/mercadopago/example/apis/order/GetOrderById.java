@@ -6,6 +6,11 @@ import com.mercadopago.exceptions.MPApiException;
 import com.mercadopago.exceptions.MPException;
 import com.mercadopago.net.MPResponse;
 
+/**
+ * Mercado Pago Get Order.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/get-order/get">Documentation</a>
+ */
 public class GetOrderById {
 
     public static void main(String[] args) {

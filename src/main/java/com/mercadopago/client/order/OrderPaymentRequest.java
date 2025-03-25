@@ -5,7 +5,7 @@ import lombok.Getter;
 
 // API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
 
-/** OrderPaymentCreateRequest class. */
+/** OrderPaymentRequest class. */
 @Getter
 @Builder
 public class OrderPaymentRequest {

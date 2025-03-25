@@ -10,6 +10,11 @@ import com.mercadopago.net.MPResponse;
 
 import java.util.*;
 
+/**
+ * Mercado Pago Create Order transaction.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/add-transaction/post">Documentation</a>
+ */
 public class CreateTransaction{
 
     public static void main(String[] args) {

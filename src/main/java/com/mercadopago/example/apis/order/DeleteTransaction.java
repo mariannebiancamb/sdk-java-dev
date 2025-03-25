@@ -9,6 +9,11 @@ import com.mercadopago.exceptions.MPException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Mercado Pago Delete Order transaction.
+ *
+ * @see <a href="https://mercadopago.com/developers/en/reference/order/online-payments/delete-transaction/delete">Documentation</a>
+ */
 public class DeleteTransaction {
 
     public static void main(String[] args) {
