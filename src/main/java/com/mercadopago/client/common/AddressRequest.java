@@ -16,7 +16,7 @@ public class AddressRequest {
   /** Street number. */
   private final String streetNumber;
 
-  /** neighborhood. */
+  /** Neighborhood. */
   private final String neighborhood;
 
   /** City. */

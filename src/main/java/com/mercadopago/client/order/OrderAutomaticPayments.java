@@ -5,20 +5,20 @@ import lombok.Getter;
 
 // API version: 1ff4822a-2dfd-4393-800e-a562edb3fe32
 
-/** OrderAutomaticPaymentsRequest class. */
+/** OrderAutomaticPayments class. */
 @Getter
 @Builder
 public class OrderAutomaticPayments {
 
-  /** payment profile id. */
+  /** Payment profile ID. */
   private String payment_profile_id;
 
-  /** retries. */
+  /** Retries. */
   private String retries;
 
-  /** schedule date. */
+  /** Schedule date. */
   private String scheduleDate;
 
-  /** due date. */
+  /** Due date. */
   private String dueDate;
 }

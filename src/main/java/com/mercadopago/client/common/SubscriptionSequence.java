@@ -3,14 +3,14 @@ package com.mercadopago.client.common;
 import lombok.Builder;
 import lombok.Getter;
 
-/** OrderAutomaticPaymentsRequest class. */
+/** SubscriptionSequence class. */
 @Getter
 @Builder
 public class SubscriptionSequence {
 
     /** Subscription sequence number. */
-    private int number;
+    private Integer number;
 
     /** Subscription sequence total */
-    private int total;
+    private Integer total;
 }
