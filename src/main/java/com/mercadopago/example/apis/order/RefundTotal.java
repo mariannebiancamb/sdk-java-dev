@@ -3,6 +3,7 @@ package com.mercadopago.example.apis.order;
 import com.mercadopago.MercadoPagoConfig;
 import com.mercadopago.client.order.OrderClient;
 import com.mercadopago.core.MPRequestOptions;
+import com.mercadopago.resources.order.Order;
 import com.mercadopago.resources.order.OrderRefund;
 
 import java.util.HashMap;
@@ -28,7 +29,7 @@ public class RefundTotal {
                 .build();
 
         try {
-           OrderRefund order = client.refund(orderId, requestOptions);
+            Order order = client.refund(orderId, requestOptions);
             System.out.println("Order successfully refunded.");
             System.out.println("Status: " + order.getStatus());
             System.out.println("Status Detail: " + order.getStatusDetail());

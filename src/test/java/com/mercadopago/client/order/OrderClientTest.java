@@ -210,7 +210,7 @@ class OrderClientTest extends BaseClientTest {
 
         String id = "123";
 
-        OrderRefund orderRefund = client.refund(id);
+        Order orderRefund = client.refund(id);
 
         Assertions.assertNotNull(orderRefund);
         Assertions.assertEquals(HttpStatus.OK, orderRefund.getResponse().getStatusCode());
@@ -235,7 +235,7 @@ class OrderClientTest extends BaseClientTest {
                 .build();
 
         JsonObject payload = Serializer.serializeToJson(refundRequest);
-        OrderRefund orderRefund = client.refund(orderId, refundRequest);
+        Order orderRefund = client.refund(orderId, refundRequest);
 
         Assertions.assertNotNull(payload);
         Assertions.assertTrue(payload.has("transactions"));
