@@ -79,4 +79,7 @@ public class Order extends MPResource {
 
     /** Order config. */
     private OrderConfig config;
+
+    /** Payer information. */
+    private OrderPayer payer;
 }
