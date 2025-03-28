@@ -25,17 +25,18 @@ public class UpdateTransaction {
     public static void main(String[] args) {
         MercadoPagoConfig.setAccessToken("{{ACCESS_TOKEN}}");
 
-        String orderId = "{{ORDER_ID}}";
-        String transactionId = "{{TRANSACTION_ID}}";
+        String orderId = "{{order_id}}";
+        String transactionId = "{{transaction_id}}";
 
         OrderClient client = new OrderClient();
 
         OrderPaymentRequest paymentRequest = OrderPaymentRequest.builder()
-            .paymentMethod(
-                OrderPaymentMethodRequest.builder()
-                    .installments(3)
-                    .build())
-            .build();
+                .paymentMethod(OrderPaymentMethodRequest.builder()
+                        .type("credit_card")
+                        .installments(8)
+                        .statementDescriptor("statement")
+                        .build())
+                .build();
 
         Map<String, String> headers = new HashMap<>();
         headers.put("X-Idempotency-Key", "{{IDEMPOTENCY_KEY}}");

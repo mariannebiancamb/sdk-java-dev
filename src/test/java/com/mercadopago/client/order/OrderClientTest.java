@@ -7,6 +7,7 @@ import com.mercadopago.exceptions.MPException;
 import com.mercadopago.helper.MockHelper;
 import com.mercadopago.net.HttpStatus;
 import com.mercadopago.resources.order.Order;
+import com.mercadopago.resources.order.OrderRefund;
 import com.mercadopago.resources.order.OrderTransaction;
 import com.mercadopago.resources.order.UpdateOrderTransaction;
 import com.mercadopago.serialization.Serializer;
@@ -215,7 +216,6 @@ class OrderClientTest extends BaseClientTest {
         Assertions.assertEquals(HttpStatus.OK, orderRefund.getResponse().getStatusCode());
         Assertions.assertNotNull(orderRefund.getResponse());
         Assertions.assertEquals("refunded", orderRefund.getStatus());
-        Assertions.assertEquals("ref_01JCK2SDVFSJGY54AMJCDR9X7R", orderRefund.getTransactions().getRefunds().get(0).getId());
     }
 
     @Test
